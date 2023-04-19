@@ -8,6 +8,6 @@ public class HomeController {
 	@GetMapping("/")
 	public String home() throws Exception{
 		
-		return "/home";
+		return "/common/home";
 	}
 }

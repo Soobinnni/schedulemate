@@ -3,20 +3,20 @@
 "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
 	<!-- main_template -->
-	<definition name="main-template"
-		template="/WEB-INF/tiles/layouts/default/main_template.jsp">
-		<put-attribute name="title" value="마로티켓" />
+	<definition name="member-main-template"
+		template="/WEB-INF/tiles/layouts/member/member_main_template.jsp">
+		<put-attribute name="title" value="스케줄 메이트" />
 		<put-attribute name="header"
-			value="/WEB-INF/tiles/components/main/header.jsp" />
+			value="/WEB-INF/tiles/components/member/header.jsp" />
 		<put-attribute name="logo"
-			value="/WEB-INF/tiles/components/main/logo.jsp" />
-		<put-attribute name="menu"
-			value="/WEB-INF/tiles/components/main/menu.jsp" />
-		<put-attribute name="footer"
-			value="/WEB-INF/tiles/components/main/footer.jsp" />
+			value="/WEB-INF/tiles/components/member/logo.jsp" />
+		<!-- <put-attribute name="menu"
+			value="/WEB-INF/tiles/components/main/menu.jsp" /> -->
 	</definition>
-	<definition name="home" extends="main-template">
+	
+	<!-- 멤버 스케줄 홈 -->
+	<definition name="member-home" extends="member-main-template">
 		<put-attribute name="content"
-			value="/WEB-INF/views/home.jsp" />
+			value="/WEB-INF/views/member/member-home.jsp" />
 	</definition>
 </tiles-definitions>
