@@ -4,19 +4,20 @@
 <tiles-definitions>
 	<!-- main_template -->
 	<definition name="member-main-template"
-		template="/WEB-INF/tiles/layouts/member/member_main_template.jsp">
+		template="/WEB-INF/tiles/layouts/member/member-main-template.jsp">
 		<put-attribute name="title" value="스케줄 메이트" />
 		<put-attribute name="header"
 			value="/WEB-INF/tiles/components/member/header.jsp" />
 		<put-attribute name="logo"
 			value="/WEB-INF/tiles/components/member/logo.jsp" />
-		<!-- <put-attribute name="menu"
-			value="/WEB-INF/tiles/components/main/menu.jsp" /> -->
+		<!-- <put-attribute name="menu" value="/WEB-INF/tiles/components/main/menu.jsp" 
+			/> -->
 	</definition>
-	
-	<!-- 멤버 스케줄 홈 -->
-	<definition name="member-home" extends="member-main-template">
+
+	<!-- 멤버 스케줄 홈, 상세 페이지 -->
+	<definition name="schedule.*"
+		extends="member-main-template">
 		<put-attribute name="content"
-			value="/WEB-INF/views/member/member-home.jsp" />
+			value="/WEB-INF/views/schedule/schedule-{1}.jsp" />
 	</definition>
 </tiles-definitions>
