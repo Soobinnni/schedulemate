@@ -15,4 +15,5 @@ public class SendVO {
 
 	private int mnum; //멤버 넘버
 	private int snum;//스케줄 넘버
+	private int sdate;//스케줄 날짜
 }

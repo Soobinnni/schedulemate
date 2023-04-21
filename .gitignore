@@ -174,5 +174,5 @@ $RECYCLE.BIN/
 
 # etc
 application.properties
-
+log4j.properties
 # End of https://www.toptal.com/developers/gitignore/api/java,windows,eclipse,maven

@@ -1,6 +1,8 @@
 package com.schedulemate.mapper;
 
+import org.apache.ibatis.annotations.Param;
+
 public interface ScheduleMapper {
-	//한달 분량의 스케줄 read
-	public 
+	//멤버 넘버 read
+	public int getMemberNum(@Param("mid") String mid) throws Exception;
 }

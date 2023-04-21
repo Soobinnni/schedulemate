@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.schedulemate.mapper.SchedulelistMapper">
+	<resultMap id="schedulelist"
+		type="com.schedulemate.schedulelist.domain.SchedulelistVO">
+		<id property="slnum" column="sl_num" />
+		<result property="slplannedTime" column="sl_plannedTime" />
+		<result property="slplannedMin"
+			column="sl_plannedMin" />
+		<result property="slcontent" column="sl_content" />
+		<result property="slimportantschedule" column="sl_importantschedule" />
+		<result property="slcategory" column="sl_category" />
+		<result property="snum" column="s_num" />
+		<result property="sdate" column="s_date" />
+	</resultMap>
+
+	<!-- 한달로 묶어서 반환 -->
+	<select id="read" resultMap="schedulelist">
+		SELECT sl.*
+		FROM schedule s
+		JOIN schedulelist sl ON s.s_date = sl.s_date AND s.s_num = sl.s_num
+		JOIN member m ON s.m_num = m.m_num
+		WHERE sl.s_date LIKE '%'||#{sdate}||'%' AND s.m_num = #{mnum}
+		ORDER BY sl.s_date ASC, sl.sl_plannedtime ASC, sl_plannedmin ASC
+	</select>	
+</mapper>

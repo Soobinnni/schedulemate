@@ -29,10 +29,11 @@ increment by 1;
 
 -- schedule table
 create table schedule (
-     s_num number NOT NULL primary KEY ,--schedule 시퀀스번호
+     s_num number NOT NULL ,--schedule 시퀀스번호
      m_num number NOT NULL,--member 시퀀스번호(FK)
-     s_date DATE NOT NULL,--스케줄 날짜
+     s_date VARCHAR2(50) NOT NULL,--스케줄 날짜
      s_importantschedule number, --중요 스케줄 여부
+    PRIMARY KEY (s_date, s_num),
     FOREIGN KEY ( m_num ) REFERENCES member ( m_num )
 );
 --schedule sequence
@@ -42,14 +43,16 @@ increment by 1;
 
 -- schedulelist table
 create table schedulelist (
-     sl_num number NOT NULL primary KEY ,--schedulelist 시퀀스번호
-     s_num number NOT NULL,--schedule 시퀀스번호(FK)
+     sl_num number NOT NULL,--schedulelist 시퀀스번호
      sl_plannedtime NUMBER(2),--계획 시각
      sl_plannedmin NUMBER(2),--계획 분
-     sl_content CLOB NOT NULL,--계획 내용
+     sl_content VARCHAR2(3000) NOT NULL,--계획 내용
      sl_importantschedule number, --중요 스케줄 여부
      sl_category number, --스케줄 카테고리
-    FOREIGN KEY ( s_num ) REFERENCES schedule ( s_num )
+    s_date VARCHAR2(50) NOT NULL,--스케줄 날짜(FK)
+     s_num number NOT NULL ,--schedule 시퀀스번호
+    PRIMARY KEY (sl_num),
+    FOREIGN KEY ( s_date, s_num ) REFERENCES schedule ( s_date, s_num )
 );
 --schedule sequence
 create sequence schedulelist_seq
@@ -64,8 +67,9 @@ create table send (
      sd_importantmonth number(1),
      m_num number NOT NULL,--member 시퀀스번호(FK)
      s_num number NOT NULL,--member 시퀀스번호(FK)
+     s_date varchar2(50) NOT NULL,--schedule 시퀀스번호(FK)
     FOREIGN KEY ( m_num ) REFERENCES member ( m_num ),
-    FOREIGN KEY ( s_num ) REFERENCES schedule ( s_num )
+    FOREIGN KEY ( s_date, s_num ) REFERENCES schedule (s_date,  s_num )
 );
 --send sequence
 create sequence send_seq
