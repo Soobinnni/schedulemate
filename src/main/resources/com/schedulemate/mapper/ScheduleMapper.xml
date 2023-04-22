@@ -7,4 +7,10 @@
 		FROM member
 		WHERE m_id = #{mid}
 	</select>
+	<!-- 스케줄 read -->
+	<select id='read' resultType="com.schedulemate.schedule.domain.ScheduleVO">
+		SELECT *
+		FROM schedule
+		WHERE m_num = #{mnum} AND s_date = #{sdate}
+	</select>
 </mapper>

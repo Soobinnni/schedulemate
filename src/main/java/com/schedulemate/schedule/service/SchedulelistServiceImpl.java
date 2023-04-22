@@ -1,4 +1,4 @@
-package com.schedulemate.schedulelist.service;
+package com.schedulemate.schedule.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,16 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.schedulemate.mapper.SchedulelistMapper;
-import com.schedulemate.schedulelist.domain.SchedulelistVO;
+import com.schedulemate.schedule.domain.SchedulelistVO;
 
 @Service
 public class SchedulelistServiceImpl implements SchedulelistService {
 	@Autowired
 	private SchedulelistMapper mapper;
 
-	public Map<String, List<SchedulelistVO>> read(int mnum, String sdate) throws Exception {
+	public Map<String, List<SchedulelistVO>> readMonthly(int mnum, String sdate) throws Exception {
 		//쿼리 결과
-		List<SchedulelistVO> SchedulelistList = mapper.read(mnum, sdate);
+		List<SchedulelistVO> SchedulelistList = mapper.readMonthly(mnum, sdate);
 
 		// sdate를 key로 하고 SchedulelistVO를 value로 하는 Map 객체를 생성하여 결과를 저장할 List 객체에 추가
 		Map<String, List<SchedulelistVO>> scheduleMap = new HashMap<>();
@@ -40,5 +40,10 @@ public class SchedulelistServiceImpl implements SchedulelistService {
 		// end
 
 		return scheduleMap;
+	};
+	
+
+	public List<SchedulelistVO> read(int snum) throws Exception{
+		return mapper.read(snum);
 	};
 }

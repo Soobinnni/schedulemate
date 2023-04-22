@@ -18,6 +18,6 @@
 	<definition name="schedule.*"
 		extends="member-main-template">
 		<put-attribute name="content"
-			value="/WEB-INF/views/schedule/schedule-{1}.jsp" />
+			value="/WEB-INF/views/schedule/{1}.jsp" />
 	</definition>
 </tiles-definitions>

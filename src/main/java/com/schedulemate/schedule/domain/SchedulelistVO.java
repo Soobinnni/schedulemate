@@ -1,4 +1,4 @@
-package com.schedulemate.schedulelist.domain;
+package com.schedulemate.schedule.domain;
 
 import lombok.ToString;
 import lombok.Getter;

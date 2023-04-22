@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR&display=swap');
+
+.schedulelist_content {
+	/* schedulelist_content */
+	box-sizing: border-box;
+	/* Auto layout */
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	padding: 40px 68px;
+	gap: 15px;
+	width: 847px;
+	height: 151px;
+	/* Inside auto layout */
+	flex: none;
+	order: 0;
+	flex-grow: 0;
+}
+
+.schedule {
+	font-family: 'IBM Plex Sans KR', sans-serif;
+	font-size : 18px;
+	letter-spacing : -1px;
+	box-sizing: border-box;
+	/* Auto layout */
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	padding: 0px;
+	gap: 10px;
+	width: 711px;
+	height: 28px;
+	border-radius: 20px;
+	/* Inside auto layout */
+	flex: none;
+	order: 0;
+	flex-grow: 0;
+}
+.slimportantschedule {
+	width : 20px;
+	height : 20px;
+	accent-color: black;
+}
+.slcategory {
+	font-size : 20px;
+}

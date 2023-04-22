@@ -1,9 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" isELIgnored="false"%>
-<!-- js -->
-<script src="/js/member-schedule.js"></script>
 <!-- css -->
-<link rel="stylesheet" type="text/css" href="/css/member-schedule.css">
+<link rel="stylesheet" type="text/css" href="/css/home.css">
 
 <!-- content_memberhome -->
 <!-- 날짜선택 -->
@@ -167,7 +165,14 @@ $(document).ready(function() {
 	//페이지가 준비되면, schedule에 따른 schedulelist를 ajax로 불러옴
 	readScheduleAjax(sdate);
 
-	//스케줄이 있는 날 마우스 오버 이벤트 처리
+	//스케줄 날짜 일 클릭 이벤트(스케줄 입력 폼으로 이동)
+	$(document).on('click', '.has-date', function() {
+		var sdate = $(this).find('span[name="schedule-date"]').attr('value'); //클릭한 날 날짜 정보
+		window.location.href = '/schedule/detail?sdate=' + sdate;
+	});
+
+
+	//스케줄이 있는 날 마우스 오버 이벤트 처리(팝업을 띄운다)
 	$(document).on('mouseenter', '.has-schedulelist', function() {
 		var hiddenInput = $(this).find('input[type="hidden"]');
 		var scheduleList = JSON.parse(hiddenInput.val());
@@ -178,13 +183,13 @@ $(document).ready(function() {
 		$.each(scheduleList, function(index, schedule) {
 			var slcategory = schedule.slcategory;
 			var schedulecontent = schedule.schedulecontent;
-			
+
 			// 팝업에 append할 내용 추가
 			var $categorySpan = $('<span>').html('●');
 			categoryColorDecision(slcategory, $categorySpan); //●색상 결정
 			var $contentSpan = $('<span>').html(schedulecontent);
 			var $popupListItem = $('<li>').addClass('schedule-popup-item');
-			
+
 			$popupListItem.append($categorySpan);
 			$popupListItem.append($contentSpan);
 			$popupList.append($popupListItem);
@@ -229,7 +234,7 @@ function readScheduleAjax(sdate) {
 	var schedulelistStr = JSON.stringify(schedulelistObj);
 	$.ajax({
 		type: "post",
-		url: "/schedulelist/",
+		url: "/schedule/schedulelist",
 		data: schedulelistStr,
 		contentType: "application/json; charset=utf-8",
 		success: function(response) {

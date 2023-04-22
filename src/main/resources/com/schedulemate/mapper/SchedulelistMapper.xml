@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.schedulemate.mapper.SchedulelistMapper">
 	<resultMap id="schedulelist"
-		type="com.schedulemate.schedulelist.domain.SchedulelistVO">
+		type="com.schedulemate.schedule.domain.SchedulelistVO">
 		<id property="slnum" column="sl_num" />
 		<result property="slplannedTime" column="sl_plannedTime" />
 		<result property="slplannedMin"
@@ -15,7 +15,7 @@
 	</resultMap>
 
 	<!-- 한달로 묶어서 반환 -->
-	<select id="read" resultMap="schedulelist">
+	<select id="readMonthly" resultMap="schedulelist">
 		SELECT sl.*
 		FROM schedule s
 		JOIN schedulelist sl ON s.s_date = sl.s_date AND s.s_num = sl.s_num
@@ -23,4 +23,10 @@
 		WHERE sl.s_date LIKE '%'||#{sdate}||'%' AND s.m_num = #{mnum}
 		ORDER BY sl.s_date ASC, sl.sl_plannedtime ASC, sl_plannedmin ASC
 	</select>	
+	<!-- 스케줄리스트 read -->
+	<select id='read' resultMap="schedulelist">
+		SELECT *
+		FROM schedulelist
+		WHERE s_num = #{snum}
+	</select>
 </mapper>
