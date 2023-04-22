@@ -112,9 +112,16 @@
 								</c:choose>
 								<input type='text' class='slcontent' name = 'slcontent' value='${list.slcontent }' readonly="readonly">
 							<div class='schedule_change'>
-								<span class='schedule_delete'><img width="24px" src="/images/schedule-delete.png"></span>
-								<span class='schedule_modify'><img src="/images/schedule-modify.png"></span>
-								<input class='slimportantschedule' type="checkbox" name='important_sch' value='${list.slimportantschedule }'/> 
+								<span class='schedule_modify' data-value='${list.slnum }'><img src="/images/schedule-modify.png"></span>
+								<span class='schedule_delete' data-value='${list.slnum }'><img width="24px" src="/images/schedule-delete.png"></span>							
+								<c:choose>
+									<c:when test="${ list.slimportantschedule eq 0}">
+										<input class='slimportantschedule' type="checkbox" name='important_sch' value='${list.slimportantschedule }'/> 
+									</c:when>
+									<c:otherwise>
+										<input class='slimportantschedule' type="checkbox" name='important_sch' value='${list.slimportantschedule }' checked/> 
+									</c:otherwise>
+								</c:choose>
 							</div>
 						</div>
 					</c:forEach>
@@ -147,14 +154,32 @@ $(document).ready(function() {
 		}
 	});
 	//스케줄 추가 btn 클릭 이벤트
-	$('new_schedule_btn').on("click", function(){
-		$('new_schedule_form').submit();
+	$('.new_schedule_btn').on("click", function(){
+		$('.new_schedule_form').submit();
 	});
-	
+	//스케줄 추가 btn 클릭 이벤트
+	$('.schedule_delete').on("click", function(){
+		var slnum = $(this).data('value');
+		var sdate = "${schedulelist[0].sdate}";
+		var scheduleJSON = {
+			"slnum" : slnum,	
+			"sdate": sdate
+		};
+		$.ajax({
+		    url: "/schedule/schedulelist/delete",
+		    type: "DELETE",
+			data: JSON.stringify(scheduleJSON),
+			contentType: "application/json; charset=utf-8",
+		    success: function(response) {
+		        window.location.href =response;
+		    }
+		});
+	});
+		
 
 	//중요 알림 추가 마우스 오버 이벤트 처리(팝업을 띄운다)
 	$('.slimportantschedule').on('mouseover', function() {
-		var content = '중요 스케줄로 추가합니다.'
+		var content = '중요 스케줄로 추가/삭제합니다.'
 		var $location = $(this);
 		makeMouseOverPopup(content, $location);
 	});

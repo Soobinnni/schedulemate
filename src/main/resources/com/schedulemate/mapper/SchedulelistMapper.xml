@@ -28,9 +28,9 @@
 		SELECT *
 		FROM schedulelist
 		WHERE s_num = #{snum}
-		ORDER BY sl_plannedtime ASC, sl_plannedmin ASC
+		ORDER BY sl_plannedtime ASC, sl_plannedmin ASC, sl_num ASC
 	</select>
-	<!-- 스케줄리스트 create -->
+	<!-- 스케줄 create -->
 	<insert id='create' parameterType="com.schedulemate.schedule.domain.SchedulelistVO">
 		INSERT INTO schedulelist(
 			sl_num,
@@ -53,4 +53,9 @@
 			#{sdate}
 		)
 	</insert>
+	<!-- 스케줄 삭제  -->
+	<delete id="delete"  parameterType="int">
+		DELETE FROM schedulelist 
+		WHERE sl_num = #{slnum}
+	</delete>
 </mapper>

@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -71,11 +72,21 @@ public class ScheduleController {
 	@PostMapping("/schedulelist/register")
 	public String register(SchedulelistVO vo) throws Exception{
 		String url = "redirect:/schedule/detail?sdate="+vo.getSdate();
-		System.out.println(vo);
 		int success = schedulelistService.register(vo);
 		System.out.println("등록 성공 : "+success);
 		
 		return url;
+	}
+	
+	//스케줄 삭제
+	@DeleteMapping("/schedulelist/delete")
+	public ResponseEntity<String> delete(@RequestBody SchedulelistVO vo) throws Exception{
+		String url = "/schedule/detail?sdate="+vo.getSdate();
+		
+		int success = schedulelistService.delete(vo.getSlnum());
+		System.out.println("삭제 성공 : "+success);
+		
+		return new ResponseEntity<>(url, HttpStatus.OK);
 	}
 	
 	@PostMapping("/schedulelist")

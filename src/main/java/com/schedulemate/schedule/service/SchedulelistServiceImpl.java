@@ -52,4 +52,8 @@ public class SchedulelistServiceImpl implements SchedulelistService {
 	public int register(SchedulelistVO vo) throws Exception{
 		return mapper.create(vo);
 	};
+	//스케줄 삭제
+	public int delete(int slnum) throws Exception{
+		return mapper.delete(slnum);
+	};
 }
