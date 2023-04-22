@@ -47,27 +47,11 @@
 	</div>
 	<div id="calandar_content">
 		<div class="calandar_week">
-			<!-- 							<div class="sun">1</div>
-							<div class="calandar_day">2</div>
-							<div class="calandar_day">3</div>
-							<div class="calandar_day">4</div>
-							<div class="calandar_day">5</div>
-							<div class="calandar_day">6</div>
-							<div class="sat">7</div> -->
-		</div>
-		<!-- 행 반복 -->
-		<div class="calandar_week">
-			<!-- 							<div class="sun">29</div>
-							<div class="calandar_day">30</div>
-							<div class="calandar_day"></div>
-							<div class="calandar_day"></div>
-							<div class="calandar_day"></div>
-							<div class="calandar_day"></div>
-							<div class="sat"></div> -->
 		</div>
 	</div>
 </div>
 <script>
+//달력 동적 생성 start
 function prevMonth(date) {
 	var target = new Date(date);
 	target.setDate(1);
@@ -85,7 +69,6 @@ function nextMonth(date) {
 }
 
 function getYmd(target) {
-	// IE에서 날짜 문자열에 0이 없으면 인식 못함
 	var month = ('0' + (target.getMonth() + 1)).slice(-2);
 	return [target.getFullYear(), month, '01'].join('-');
 }
@@ -104,7 +87,6 @@ function fullDays(date) {
 		return n >= (firstWeekDay + thisDays);
 	}).shift();
 
-	// 셀 초기화, IE에서 Array.fill()을 지원하지 않아서 변경
 	// var days = new Array(cell).fill({date: '', dayNum: '', today: false});
 	var days = []
 	for (var i = 0; i < cell; i++) {
@@ -177,14 +159,65 @@ $(function() {
 		readScheduleAjax(sdate);
 	});
 });
+//달력 동적 생성 end
 
-
+//페이지 준비 start
 $(document).ready(function() {
 	var sdate = ${ sdate }; //현 날짜(yyyy.mm)
-	//페이지가 준비되면, schedule에 따른 schedulelist를 불러옴
+	//페이지가 준비되면, schedule에 따른 schedulelist를 ajax로 불러옴
 	readScheduleAjax(sdate);
-});
 
+	//스케줄이 있는 날 마우스 오버 이벤트 처리
+	$(document).on('mouseenter', '.has-schedulelist', function() {
+		var hiddenInput = $(this).find('input[type="hidden"]');
+		var scheduleList = JSON.parse(hiddenInput.val());
+		var $popupContainer = $('<div>').addClass('schedule-popup-container');
+		var $popupList = $('<ul>').addClass('schedule-popup-list');
+
+		// scheduleList를 이용하여 처리(마우스오버 팝업 생성)
+		$.each(scheduleList, function(index, schedule) {
+			var slcategory = schedule.slcategory;
+			var schedulecontent = schedule.schedulecontent;
+			
+			// 팝업에 append할 내용 추가
+			var $categorySpan = $('<span>').html('●');
+			categoryColorDecision(slcategory, $categorySpan); //●색상 결정
+			var $contentSpan = $('<span>').html(schedulecontent);
+			var $popupListItem = $('<li>').addClass('schedule-popup-item');
+			
+			$popupListItem.append($categorySpan);
+			$popupListItem.append($contentSpan);
+			$popupList.append($popupListItem);
+		});
+
+		// 팝업 css 설정
+		$popupContainer.append($popupList);
+		$popupList.css({
+			'list-style': 'none',
+			'padding-left': '15px'
+		});
+		$popupContainer.css({
+			'position': 'absolute',
+			'top': $(this).offset().top + $(this).height() + 'px',
+			'left': $(this).offset().left + 'px',
+			'background': '#FFFFFF',
+			'border': '1px solid #000000',
+			'box-shadow': '0px 0px 10px rgba(0, 0, 0, 0.5)',
+			'padding-right': '15px',
+			'max-width': '500px',
+			'z-index': 9999
+		});
+
+		// 팝업 컨테이너를 body 요소에 추가
+		$('body').append($popupContainer);
+	});
+
+	//스케줄이 있는 날 마우스 아웃 이벤트 처리
+	$(document).on('mouseleave', '.has-schedulelist', function() {
+		$('.schedule-popup-container').remove(); //팝업 제거
+	});
+});
+//페이지 준비 end
 
 //schedulelist를 불러오는 ajax
 function readScheduleAjax(sdate) {
@@ -214,33 +247,38 @@ function addSchedulelist(response) {
 		if (response[date]) {
 			var scheduleList = response[date]; //List<SchedulelistVO>
 			// 스케줄 목록을 추가할 요소
+			var $div_schedulelist = $('<div class="has-schedulelist" style="width:90%">');
 			var $span = $('<span>');
+			var scheduleJSON = {}; // 스케줄 정보를 저장할 배열
 			// 각 스케줄에 대해서 처리
 			$.each(scheduleList, function(index, schedule) {
-				var slcategory = schedule.slcategory;// 스케줄 타이틀
-				var slcontent = schedule.slcontent;// 스케줄 내용
-				var plannedTime = schedule.slplannedTime;// 예정된 시간, 분
+				var slcategory = schedule.slcategory; // 스케줄 타이틀
+				var slcontent = schedule.slcontent; // 스케줄 내용
+				var plannedTime = schedule.slplannedTime; // 예정된 시간, 분
 				var plannedMin = schedule.slplannedMin;
 
-				var schedule = plannedTime + '시 ' + plannedMin + '분 ' + slcontent;
-				if (plannedMin == 0) {
-					schedule = plannedTime + '시 ' + slcontent;
-				}
+				// 스케줄 정보 JSON저장
+				scheduleJSON[index] = {
+					"slcategory": slcategory,
+					"schedulecontent": ' ' + plannedTime + '시 ' + plannedMin + '분 ' + slcontent
+				};
+
 				// 카테고리 캘린더에 추가
 				var $item = $('<span>').html('●');
 				categoryColorDecision(slcategory, $item);
 				$span.append($item);
-
-				// 스케줄 프로퍼티를 hidden 태그 추가
-				var $hidden_slcategory = $('<input>').attr('type', 'hidden').val(slcategory);
-				var $hidden_schedule = $('<input>').attr('type', 'hidden').val(schedule);
-				$item.append($hidden_slcategory).append($hidden_schedule);
 			});
+			// 스케줄 정보를 담은 배열을 JSON 문자열로 변환하여 hidden 태그 추가
+			var $hidden_schedulelist = $('<input>').attr('type', 'hidden').attr('name', 'schedulelist').val(JSON.stringify(scheduleJSON));
+			$div_schedulelist.append($hidden_schedulelist);
+
 			// 스케줄 정보를 담은 $span을 .has-date div 요소에 추가
-			$(this).append($span);
+			$div_schedulelist.append($span);
+			$(this).append($div_schedulelist);
 		}
 	});
 }
+
 function categoryColorDecision(slcategory, $item) { //카테고리 숫자, 추가 요소
 	// 조건에 따라 스타일을 지정
 	switch (slcategory) {
