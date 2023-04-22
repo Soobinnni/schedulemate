@@ -53,6 +53,7 @@ public class ScheduleController {
 		return "schedule.home";
 	}
 
+	//스케줄보기
 	@GetMapping("/detail")
 	public String detail(String sdate, HttpServletRequest request, Model model) throws Exception {
 		ScheduleVO vo;
@@ -64,6 +65,17 @@ public class ScheduleController {
 			model.addAttribute("schedulelist", listVO);
 		}
 		return "schedule.detail";
+	}
+	
+	//스케줄 등록
+	@PostMapping("/schedulelist/register")
+	public String register(SchedulelistVO vo) throws Exception{
+		String url = "redirect:/schedule/detail?sdate="+vo.getSdate();
+		System.out.println(vo);
+		int success = schedulelistService.register(vo);
+		System.out.println("등록 성공 : "+success);
+		
+		return url;
 	}
 	
 	@PostMapping("/schedulelist")

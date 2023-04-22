@@ -28,5 +28,29 @@
 		SELECT *
 		FROM schedulelist
 		WHERE s_num = #{snum}
+		ORDER BY sl_plannedtime ASC, sl_plannedmin ASC
 	</select>
+	<!-- 스케줄리스트 create -->
+	<insert id='create' parameterType="com.schedulemate.schedule.domain.SchedulelistVO">
+		INSERT INTO schedulelist(
+			sl_num,
+			sl_plannedTime,
+			sl_plannedMin,
+			sl_content,
+			sl_importantschedule,
+			sl_category,
+			s_num,
+			s_date
+		)
+		VALUES(
+			schedulelist_seq.NEXTVAL,
+			#{slplannedTime},
+			#{slplannedMin},
+			#{slcontent},
+			#{slimportantschedule},
+			#{slcategory},
+			#{snum},
+			#{sdate}
+		)
+	</insert>
 </mapper>

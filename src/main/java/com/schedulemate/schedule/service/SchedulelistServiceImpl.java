@@ -16,6 +16,7 @@ public class SchedulelistServiceImpl implements SchedulelistService {
 	@Autowired
 	private SchedulelistMapper mapper;
 
+	//해당 날짜의 스케줄 리스트 담기
 	public Map<String, List<SchedulelistVO>> readMonthly(int mnum, String sdate) throws Exception {
 		//쿼리 결과
 		List<SchedulelistVO> SchedulelistList = mapper.readMonthly(mnum, sdate);
@@ -42,8 +43,13 @@ public class SchedulelistServiceImpl implements SchedulelistService {
 		return scheduleMap;
 	};
 	
-
+	//스케줄 읽기
 	public List<SchedulelistVO> read(int snum) throws Exception{
 		return mapper.read(snum);
+	};
+	
+	//스케줄 등록
+	public int register(SchedulelistVO vo) throws Exception{
+		return mapper.create(vo);
 	};
 }
