@@ -10,4 +10,6 @@ public interface SchedulelistService {
 	public List<SchedulelistVO> read(int snum) throws Exception;
 	public int register(SchedulelistVO vo) throws Exception;
 	public int delete(int slnum) throws Exception;
+	public int modify(SchedulelistVO vo) throws Exception;
+	public int modifyImportantSchedule(SchedulelistVO vo) throws Exception;
 }

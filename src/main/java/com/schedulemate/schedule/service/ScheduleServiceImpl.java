@@ -15,6 +15,11 @@ public class ScheduleServiceImpl implements ScheduleService {
 	public int getMemberNum(String mid) throws Exception{
 		return mapper.getMemberNum(mid);
 	};
+	// 예매 확정
+	public int register(ScheduleVO vo) throws Exception{
+		mapper.create(vo);
+		return mapper.getScheduleById(vo.getSnum());
+	}
 	//스케줄 read
 	public ScheduleVO read(int mnum, String sdate) throws Exception {
 		return mapper.read(mnum, sdate);

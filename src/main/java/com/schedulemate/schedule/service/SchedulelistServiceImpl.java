@@ -56,4 +56,12 @@ public class SchedulelistServiceImpl implements SchedulelistService {
 	public int delete(int slnum) throws Exception{
 		return mapper.delete(slnum);
 	};
+	//스케줄 수정
+	public int modify(SchedulelistVO vo) throws Exception{
+		return mapper.update(vo);
+	};
+	//중요 스케줄 업데이트
+	public int modifyImportantSchedule(SchedulelistVO vo) throws Exception{
+		return mapper.updateImportantSchedule(vo);
+	};
 }

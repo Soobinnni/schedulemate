@@ -15,6 +15,6 @@ public class SchedulelistVO {
 	private int slimportantschedule; //중요 스케줄 표시
 	private int slcategory; //스케줄 목록 카테고리
 
-	private String snum; //스케줄 넘버
+	private int snum; //스케줄 넘버
 	private String sdate; //스케줄 날짜
 }

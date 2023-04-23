@@ -58,4 +58,16 @@
 		DELETE FROM schedulelist 
 		WHERE sl_num = #{slnum}
 	</delete>
+	<!-- 스케줄 수정  -->
+	<update id="update"  parameterType="com.schedulemate.schedule.domain.SchedulelistVO">
+		UPDATE schedulelist
+		SET sl_plannedTime = #{slplannedTime}, sl_plannedMin = #{slplannedMin}, sl_content =  #{slcontent}, sl_category = #{slcategory}
+		WHERE sl_num = #{slnum}
+	</update>
+	<!-- 스케줄 수정  -->
+	<update id="updateImportantSchedule"  parameterType="com.schedulemate.schedule.domain.SchedulelistVO">
+		UPDATE schedulelist
+		SET sl_importantschedule = #{slimportantschedule}
+		WHERE sl_num = #{slnum}
+	</update>
 </mapper>

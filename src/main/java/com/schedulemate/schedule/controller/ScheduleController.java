@@ -65,13 +65,22 @@ public class ScheduleController {
 			List<SchedulelistVO> listVO = schedulelistService.read(vo.getSnum());
 			model.addAttribute("schedulelist", listVO);
 		}
+		model.addAttribute("sdate", sdate);
 		return "schedule.detail";
 	}
 	
 	//스케줄 등록
 	@PostMapping("/schedulelist/register")
-	public String register(SchedulelistVO vo) throws Exception{
+	public String register(SchedulelistVO vo, HttpServletRequest request) throws Exception{
 		String url = "redirect:/schedule/detail?sdate="+vo.getSdate();
+		if (vo.getSnum()==0) {
+			ScheduleVO schedulevo = new ScheduleVO();
+			schedulevo.setSdate(vo.getSdate());
+			schedulevo.setMnum((Integer) request.getSession(true).getAttribute("mnum"));
+			int snum = scheduleService.register(schedulevo);
+			System.out.println("새 스케줄 생성 (snum): "+snum);
+			vo.setSnum(snum);
+		}
 		int success = schedulelistService.register(vo);
 		System.out.println("등록 성공 : "+success);
 		
@@ -87,6 +96,25 @@ public class ScheduleController {
 		System.out.println("삭제 성공 : "+success);
 		
 		return new ResponseEntity<>(url, HttpStatus.OK);
+	}
+	
+	//스케줄 수정
+	@PostMapping("/schedulelist/modify")
+	public String modify(SchedulelistVO vo) throws Exception{
+		String url = "redirect:/schedule/detail?sdate="+vo.getSdate();
+		int success = schedulelistService.modify(vo);
+		System.out.println("수정 성공 : "+success);
+		
+		return url;
+	}
+	
+	//중요 스케줄 업데이트
+	@PostMapping("/schedulelist/modifyImportantSchedule")
+	public ResponseEntity<String> modifyImportantSchedule(@RequestBody SchedulelistVO vo) throws Exception{
+		int success = schedulelistService.modifyImportantSchedule(vo);
+		System.out.println("중요 스케줄 변경 성공 : "+success);
+		
+		return new ResponseEntity<>("중요 업데이트 성공", HttpStatus.OK);
 	}
 	
 	@PostMapping("/schedulelist")
