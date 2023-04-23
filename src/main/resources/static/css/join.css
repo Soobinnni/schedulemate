@@ -1,0 +1,91 @@
+@import
+	url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR&display=swap')
+	;
+
+a {
+	text-decoration: none;
+	color: black;
+}
+
+#join_container {
+	box-sizing: border-box;
+	margin: 0 auto;
+	width: 848px;
+	max-height: 600px;
+	min-height: 600px;
+	border: 3px solid #000000;
+	box-shadow: 7px 7px;
+	margin-top: 40px;
+	font-family: 'IBM Plex Sans KR', sans-serif;
+}
+
+.join_content {
+	padding-top: 100px;
+	width: 500px;
+	height: 600px;
+	margin: 0 auto;
+}
+
+.join_content div {
+	margin: 30px 0;
+	box-shadow: 4px 4px gray;
+	border-radius: 10px;
+	font-size: 15px;
+	padding-left: 25px;
+}
+
+.join_content div.join_submit {
+	margin: 30px 0;
+	box-shadow: none;
+	border-radius: 0;
+}
+
+.join_content div input, .join_content div select {
+	display: inline-block;
+	float: right;
+	width: 280px;
+	margin-right: 20px;
+	border-style: none;
+}
+
+.join_content div select {
+	cursor: pointer;
+	color: gray;
+}
+
+.join_content div.join_submit input {
+	display: inline-block;
+	float: right;
+	width: 100px;
+	height: 50px;
+	font-size: 15px;
+	border-style: none;
+	letter-spacing: -2px;
+	cursor: pointer;
+	background: white;
+	color: black;
+	border-bottom: 5px dotted black;
+	font-weight: 700;
+	margin : 0;
+}
+
+.join_content div.join_submit input:hover {
+	background: black;
+	color: white;
+	border-radius: 50px;
+}
+
+.id_check_btn {
+	display: inline-block;
+	float: right;
+	margin-right: 24px;
+	border-style: none;
+	font-size: 13px;
+	border-radius: 10px;
+	cursor: pointer;
+	font-weight: 700;
+}
+.id_check_btn:hover {
+	background: black;
+	color: white;
+}

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.schedulemate.mapper.MemberMapper">
+	<!-- Member resultmap 정의 -->
+	<resultMap id="memberMap"
+		type="com.schedulemate.member.domain.MemberVO">
+		<id property="mnum" column="m_num" />
+		<result property="mname" column="m_name" />
+		<result property="mid" column="m_id" />
+		<result property="mpwd" column="m_pwd" />
+		<result property="mjob" column="m_job" />
+		<result property="memail" column="m_email" />
+		<result property="mphonenumber" column="m_phonenumber" />
+		<collection property="memberAuthList" resultMap="authMap" />
+	</resultMap>
+	<!-- MemberAuth resultmap 정의 -->
+	<resultMap
+		type="com.schedulemate.member.domain.MemberAuth" id="authMap">
+		<result property="mnum" column="m_num" />
+		<result property="memberAuth" column="member_Auth" />
+	</resultMap>
+	
+	<!-- 아이디 읽어오기(로그인) -->
+	<select id="read" resultMap="memberMap">
+		SELECT 
+			mem.m_num,
+			mem.m_id,
+			m_name,
+			m_pwd,
+			m_job,
+			m_email,
+			m_phonenumber,
+			member_auth
+		FROM
+			member mem LEFT OUTER JOIN member_auth auth ON
+			mem.m_num =
+			auth.m_num
+		WHERE mem.m_id = #{mid}
+	</select>
+	
+	
+	<!-- 회원가입 -->
+	<insert id="create" parameterType="com.schedulemate.member.domain.MemberVO">
+		INSERT INTO member (
+			m_num, m_name, m_id, m_pwd, m_job, m_email, m_phonenumber
+		)
+		VALUES (
+			member_seq.nextval,
+			#{mname},
+			#{mid},
+			#{mpwd},
+			#{mjob},
+			#{memail},
+			#{mphonenumber}
+		)
+	</insert>
+	<!-- 회원가입 시 권한 부여 -->
+	<insert id="createAuth">
+		INSERT INTO member_auth
+		(
+			m_num,
+			member_auth
+		)
+		VALUES
+		(
+			member_seq.CURRVAL,
+			#{memberAuth}
+		)
+	</insert>
+	
+	<!-- 회원 아이디 중복 체크 -->
+	<select id="idCheck" resultType="int">
+		SELECT count(*)
+		FROM member
+		WHERE m_id = #{mid}
+	</select>
+</mapper>

@@ -2,6 +2,7 @@
 drop table send  purge ;
 drop table schedulelist purge ;
 drop table schedule purge ;
+drop table member_auth purge;
 drop table member purge ;
 
 --순서에 상관 없는 테이블들
@@ -16,8 +17,9 @@ drop sequence send_seq;
 -- member table
 create table member (
     m_num number NOT NULL primary KEY, --회원 일련번호
+     m_name varchar2(50) NOT NULL , --이름
      m_id varchar2(50) NOT NULL unique, --아이디
-     m_pwd varchar2(50) NOT NULL, --비밀번호
+     m_pwd varchar2(100) NOT NULL, --비밀번호
      m_job VARCHAR2(20) NOT NULL,--직업
      m_email VARCHAR2(50) NOT NULL,--이메일
      m_phonenumber VARCHAR2(50) NOT NULL --휴대폰번호
@@ -26,6 +28,13 @@ create table member (
 create sequence member_seq
 start with 1
 increment by 1;
+
+--member auth table
+CREATE TABLE member_auth (
+    m_num number NOT NULL,
+    member_auth VARCHAR2(50) NOT NULL,
+    FOREIGN KEY ( m_num ) REFERENCES member ( m_num )
+);
 
 -- schedule table
 create table schedule (

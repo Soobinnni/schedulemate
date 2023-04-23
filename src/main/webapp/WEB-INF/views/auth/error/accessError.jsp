@@ -4,9 +4,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<script>
+		alert('접근 권한이 없습니다.');
+		window.history.go(-1);
+</script>
+<title>스케줄 메이트 접근제한</title>
 </head>
 <body>
-
 </body>
-</html>
+</html>	

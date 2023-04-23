@@ -1,0 +1,47 @@
+@import
+	url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR&display=swap');
+body {
+	background: #494949;
+}
+
+#welcome_container {
+	width : 600px;
+	height: 600px;
+	margin : 120px auto;
+	border: 1px sold black;
+	background: black;
+	border-radius: 500px;
+}
+.welcome_content {
+	width : 550px;
+	margin : 0 auto;
+}
+.welcome_logo {
+	font-style: normal;
+	font-size: 65px;
+	line-height: 130%;
+	letter-spacing:-3px;
+	/* or 58px */
+	color: #000000;
+	font-family: 'Black Han Sans', sans-serif;
+	padding-top : 190px;
+	padding-left : 30px;
+}
+.welcome_info {
+	margin : 25px;
+	color : white;
+	font-size: 25px;
+	letter-spacing:-2px;
+	text-align: center;
+}
+.login_join_btn button {
+	border-style: none;
+	background : transparent;
+	color:white;
+	margin : 30px;
+	margin-top : 50px;
+	font-size: 20px;
+	padding-bottom:5px;
+	border-bottom: 5px dotted white;
+	cursor: pointer;
+}

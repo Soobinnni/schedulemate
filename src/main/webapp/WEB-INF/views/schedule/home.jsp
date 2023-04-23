@@ -160,7 +160,14 @@ $(function() {
 //달력 동적 생성 end
 
 //페이지 준비 start
-$(document).ready(function() {
+$(document).ready(function() {		
+	// ajax 통신을 위한 csrf 설정
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr(
+		"content");
+	$(document).ajaxSend(function(e, xhr, options) {
+		xhr.setRequestHeader(header, token);
+	});
 	var sdate = ${ sdate }; //현 날짜(yyyy.mm)
 	//페이지가 준비되면, schedule에 따른 schedulelist를 ajax로 불러옴
 	readScheduleAjax(sdate);

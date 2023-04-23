@@ -43,11 +43,11 @@ public class ScheduleController {
 	    String formattedCurrentMonth = currentMonth.format(formatter);
 	    
 	    //getMemberNum임시 - member 일련번호 세션
-	    int mnum = scheduleService.getMemberNum("xpsxm225");
+	    int mnum = scheduleService.getMemberNum(principal.getName());
 		HttpSession session = request.getSession(true);
 		session.setAttribute("mnum", mnum);
 		mnum = (Integer)session.getAttribute("mnum");
-
+		
 		model.addAttribute("mnum", mnum);
 		model.addAttribute("sdate", (String)formattedCurrentMonth);
 

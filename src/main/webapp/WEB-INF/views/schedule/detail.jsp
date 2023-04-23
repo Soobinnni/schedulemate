@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <!-- css -->
 <link rel="stylesheet" type="text/css" href="/css/home.css">
 <link rel="stylesheet" type="text/css" href="/css/detail.css">
@@ -76,6 +78,7 @@
 						</div>
 						<input name="slcontent" type='text' class="new_schedule_content_text">
 						<button type='button' class='new_schedule_btn'>+</button>
+						<sec:csrfInput />
 					</form>
 				</div>
 				<c:if test="${not empty schedulelist }">
@@ -143,6 +146,7 @@
 									<span class='schedule_modify_submit' data-value='${list.slnum }'><img width="24px" src="/images/schedule-modify-complete.png"></span>
 									<span class='schedule_modify_submit_close' ><img width="24px" style='margin-left:5px;' src="/images/schedule-modify-close.png"></span>
 								</div>
+								<sec:csrfInput />
 							</form>
 						</div>
 					</c:forEach>
@@ -152,7 +156,14 @@
 	</div>
 </div>
 <script>
-$(document).ready(function() {
+$(document).ready(function() {		
+	// ajax 통신을 위한 csrf 설정
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr(
+		"content");
+	$(document).ajaxSend(function(e, xhr, options) {
+		xhr.setRequestHeader(header, token);
+	});
 	$(".schedule_modify_div").hide();
 	$('.slcategory').each(function() { //카테고리 별로 css 색상 변경
 		var value = $(this).val();

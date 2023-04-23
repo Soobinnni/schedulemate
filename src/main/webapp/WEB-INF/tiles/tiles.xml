@@ -10,8 +10,6 @@
 			value="/WEB-INF/tiles/components/member/header.jsp" />
 		<put-attribute name="logo"
 			value="/WEB-INF/tiles/components/member/logo.jsp" />
-		<!-- <put-attribute name="menu" value="/WEB-INF/tiles/components/main/menu.jsp" 
-			/> -->
 	</definition>
 
 	<!-- 멤버 스케줄 홈, 상세 페이지 -->
@@ -19,5 +17,31 @@
 		extends="member-main-template">
 		<put-attribute name="content"
 			value="/WEB-INF/views/schedule/{1}.jsp" />
+	</definition>
+	
+	<!-- 로그인 페이지 -->
+	<definition name="auth-template" template="/WEB-INF/tiles/layouts/auth/auth-template.jsp">
+		<put-attribute name="header"
+			value="/WEB-INF/tiles/components/auth/header.jsp" />
+		<put-attribute name="logo"
+			value="/WEB-INF/tiles/components/auth/logo.jsp" />
+	</definition>
+	<definition name="auth.*" extends="auth-template">
+		<put-attribute name="title" value="스케줄 메이트 {1}" />
+		<put-attribute name="content"
+			value="/WEB-INF/views/auth/login/{1}.jsp" />
+	</definition>
+	
+	<!-- 회원가입 페이지 -->
+	<definition name="join-template" template="/WEB-INF/tiles/layouts/common/join-template.jsp">
+		<put-attribute name="header"
+			value="/WEB-INF/tiles/components/common/header.jsp" />
+		<put-attribute name="logo"
+			value="/WEB-INF/tiles/components/common/logo.jsp" />
+	</definition>
+	<definition name="join-form" extends="join-template">
+		<put-attribute name="title" value="스케줄 메이트 회원가입" />
+		<put-attribute name="content"
+			value="/WEB-INF/views/common/join-form.jsp" />
 	</definition>
 </tiles-definitions>
