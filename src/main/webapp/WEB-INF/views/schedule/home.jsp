@@ -19,16 +19,32 @@
 		</div>
 		<div id='schedule_category'>
 			<div class='schedule_category_content'>
-				<span class='red'>●</span><span class='category'>취미 </span>
+				<span class='red'>●</span><span class='category'>취미 &nbsp;</span>
 			</div>
 			<div class='schedule_category_content'>
-				<span class='orange'>●</span><span class='category'>업무 </span>
+				<span class='orange'>●</span><span class='category'>업무 &nbsp;</span>
 			</div>
 			<div class='schedule_category_content'>
-				<span class='green'>●</span><span class='category'>약속 </span>
+				<span class='green'>●</span><span class='category'>약속 &nbsp;</span>
 			</div>
 			<div class='schedule_category_content'>
 				<span class='blue'>●</span><span class='category'>기타</span>
+			</div>
+			<div class='schedule_category_content'>
+				<span class='more_btn'><img src="/images/더보기.png"
+					width="12px" /></span>
+				<div class="popup-container">
+					<div class="popup-content">
+						<div align="center" style='margin-top:10px;'>
+							선택 날짜의 스케줄 <br>알림 보내기
+						</div>
+						<div style='margin-top:20px;'>
+							<div align="center" class='popup_send_select_btn'>보내기</div>
+							<div align="center" class='popup_close_btn'>닫기</div>
+						</div>
+					</div>
+				</div>
+
 			</div>
 		</div>
 		<div class="day_names">
@@ -44,8 +60,7 @@
 		</div>
 	</div>
 	<div id="calandar_content">
-		<div class="calandar_week">
-		</div>
+		<div class="calandar_week"></div>
 	</div>
 </div>
 <script>
@@ -168,6 +183,7 @@ $(document).ready(function() {
 	$(document).ajaxSend(function(e, xhr, options) {
 		xhr.setRequestHeader(header, token);
 	});
+		
 	var sdate = ${ sdate }; //현 날짜(yyyy.mm)
 	//페이지가 준비되면, schedule에 따른 schedulelist를 ajax로 불러옴
 	readScheduleAjax(sdate);
@@ -227,6 +243,38 @@ $(document).ready(function() {
 	//스케줄이 있는 날 마우스 아웃 이벤트 처리
 	$(document).on('mouseleave', '.has-schedulelist', function() {
 		$('.schedule-popup-container').remove(); //팝업 제거
+	});
+		
+	$('.more_btn').on('click', function() {
+		var $popupContainer = $(this).next('.popup-container'); // 클릭한 요소 바로 다음에 있는 팝업 컨테이너 요소를 가져옴
+		var triggerOffset = $(this).offset(); // 클릭한 요소의 위치를 가져옴
+		var popupHeight = $popupContainer.outerHeight(); // 팝업 컨테이너의 높이를 가져옴
+
+		$popupContainer.css({
+			'top': (triggerOffset.top + $(this).height()) + 'px', // 클릭한 요소 아래에 위치하도록 top 값을 설정
+			'left': (triggerOffset.left-200) + 'px' // 클릭한 요소와 같은 위치에 left 값을 설정
+		});
+
+		$popupContainer.fadeIn(); // 팝업 컨테이너를 보이도록 함
+
+		// 닫기 버튼을 누르면 팝업창을 닫음
+		$(".popup_close_btn").on('click', function() {
+			$popupContainer.fadeOut();
+		});
+	});
+	$(".popup_send_select_btn").on("click", function(){
+		//userid가 입력되어 있는 지 조회.
+		$.ajax({
+			type: "post",
+			url: "/send/sendUserIdChk",
+			success: function(response) {
+				if(response == 'null'){ //등록한 적 없음
+					
+				} else { //등록 있음 >> 체크화면
+					
+				}
+			}
+		});
 	});
 });
 //페이지 준비 end

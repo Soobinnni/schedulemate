@@ -22,7 +22,10 @@ create table member (
      m_pwd varchar2(100) NOT NULL, --비밀번호
      m_job VARCHAR2(20) NOT NULL,--직업
      m_email VARCHAR2(50) NOT NULL,--이메일
-     m_phonenumber VARCHAR2(50) NOT NULL --휴대폰번호
+     m_phonenumber VARCHAR2(50) NOT NULL, --휴대폰번호
+     m_weekend number(1) DEFAULT 0 NOT NULL, --주 스케줄 알림 여부
+     m_daily number(1) DEFAULT 0 NOT NULL,--하루 스케줄 알림 여부
+     m_importantmonth number(1) DEFAULT 0 NOT NULL--한달 전 중요 스케줄 알림 여부
 );
 --member sequence
 create sequence member_seq
@@ -71,9 +74,7 @@ increment by 1;
 -- send table
 create table send (
      sd_num number NOT NULL primary KEY ,--send 시퀀스번호
-     sd_weekend number(1),
-     sd_daily number(1),
-     sd_importantmonth number(1),
+      sd_userId VARCHAR(50) DEFAULT '0' NOT NULL,
      m_num number NOT NULL,--member 시퀀스번호(FK)
      s_num number NOT NULL,--member 시퀀스번호(FK)
      s_date varchar2(50) NOT NULL,--schedule 시퀀스번호(FK)

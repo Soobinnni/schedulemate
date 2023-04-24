@@ -36,7 +36,13 @@
 	background-color: black;
 	border-radius: 10px;
 	text-align: center;
+	font-size : 12px;
 }
+.login a, .join a, .logout a, .mypage a{
+	vertical-align: middle;
+	display:inline-block;
+	margin-top:3px;
+} 
 
 /* header_logo */
 .header_logo {

@@ -16,7 +16,7 @@ public class LoginController {
 		if (logout != null) {
 			System.out.println("회원 로그아웃");
 			// model.addAttribute("logout", "로그아웃!!!");
-			return "redirect:/auth/login";
+			return "redirect:/";
 		}
 		return "auth.login";
 	}

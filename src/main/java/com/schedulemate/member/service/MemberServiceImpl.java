@@ -23,4 +23,8 @@ public class MemberServiceImpl implements MemberService {
 	public int idCheck(MemberVO member) throws Exception{
         return mapper.idCheck(member);    
 	};
+	//멤버 정보 읽기
+	public MemberVO read(String mid) throws Exception{
+        return mapper.read(mid);    
+	};
 }

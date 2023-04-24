@@ -1,0 +1,53 @@
+.mypage_nav li.mypage-registerUserId {
+	border-bottom: 3px dashed black;
+	color: black;
+}
+
+.mypage_nav li:hover {
+	background: black;
+	color: white;
+	border-radius: 10px;
+}
+
+
+.mypage_userid_info_container {
+	margin: 50px;
+	margin-top: 30px;
+}
+.mypage_userid_info_title {
+	padding-left: 20px;
+}
+
+.mypage_userid_info_detail {
+	width: 630px;
+	max-height : 200px;
+	margin: 29px auto;
+	box-shadow: 5px 5px #6e6e6e;
+	border: 3px solid #6e6e6e;
+}
+.mypage_userid_info_form_container {
+	width: 400px;
+	margin : 0 auto;
+	height : 150px;
+	margin-top : 80px;
+}
+.mypage_userid_info_input {
+	width : 320px;
+	height : 35px;
+	padding-left : 20px;
+}
+.mypage_userid_info_sub_btn {
+	height : 45px;
+	width : 45px;
+	border-radius: 10px;
+	border-style : none;
+	color: white;
+	background: black;
+	font-weight: 700;
+	cursor: pointer;
+}
+.mypage_userid_info_sub_btn:hover {
+	color: black;
+	background: white;
+	border : 1px solid black;
+}

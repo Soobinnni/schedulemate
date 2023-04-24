@@ -1,0 +1,118 @@
+.mypage_nav li.mypage-scheduleinfo {
+	border-bottom: 3px dashed black;
+	color: black;
+}
+
+.mypage_nav li:hover {
+	background: black;
+	color: white;
+	border-radius: 10px;
+}
+
+.mypage_schedule_info_title {
+	padding-left: 20px;
+}
+
+.mypage_schedule_info_detail {
+	width: 630px;
+	margin: 29px auto;
+	box-shadow: 5px 5px #6e6e6e;
+	border: 3px solid #6e6e6e;
+}
+
+.mypage_schedule_info_container {
+	margin: 50px;
+	margin-top: 30px;
+}
+
+.send-weekend-schedule, .send-daily-schedule,
+	.send-important-monthly-schedule {
+	margin: 50px 30px;
+}
+
+.send-weekend-schedule-div, .send-daily-schedule-div,
+	.send-important-monthly-schedule-div {
+	display: inline-block;
+	width: 570px;
+	border-bottom: 2px solid #d9d9d9;
+	padding-bottom: 10px;
+	font-size : 17px;
+	letter-spacing: -1px;
+}
+.alert-img {
+	width : 30px;
+	position : relative;
+	top : 7px;
+}
+/*스위치 css*/
+.slider-box {
+	display: inline-block;
+	float: right;
+	margin-right: 50px;
+}
+
+.switch {
+	position: relative;
+	top:10px;
+	display: inline-block;
+	width: 45px;
+	height: 25px;
+}
+
+.switch input {
+	display: none;
+}
+
+.slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #6e6e6e;
+	transition: .4s;
+}
+
+.slider:before {
+	position: absolute;
+	content: "";
+	height: 22px;
+	width: 22px;
+	left: 1px;
+	bottom: 1.5px;
+	background-color: white;
+	transition: .4s;
+}
+
+.send-weekend-schedule input:checked+.slider {
+	background-color: red;
+}
+
+.send-daily-schedule input:checked+.slider {
+	background-color: orange;
+}
+
+.send-important-monthly-schedule input:checked+.slider {
+	background-color: blue;
+}
+
+input:focus+.slider {
+	box-shadow: 0 0 1px #6e6e6e;
+}
+
+input:checked+.slider:before {
+	transform: translateX(22px);
+}
+
+.slider.round {
+	border-radius: 34px;
+}
+
+.slider.round:before {
+	border-radius: 50%;
+}
+
+#box {
+	padding-top: 50px;
+}

@@ -17,6 +17,17 @@
 		extends="member-main-template">
 		<put-attribute name="content"
 			value="/WEB-INF/views/schedule/{1}.jsp" />
+	</definition>	
+	
+	<!-- 마이페이지 -->
+	<definition name="mypage.*" template="/WEB-INF/tiles/layouts/member/member-mypage-template.jsp">
+		<put-attribute name="header"
+			value="/WEB-INF/tiles/components/member/header.jsp" />
+		<put-attribute name="logo"
+			value="/WEB-INF/tiles/components/member/logo.jsp" />
+		<put-attribute name="title" value="스케줄 메이트 마이페이지" />
+		<put-attribute name="content" value="/WEB-INF/tiles/components/member/mypage/layout.jsp" />
+		<put-attribute name="content-detail" value="/WEB-INF/views/member/mypage-{1}.jsp" />
 	</definition>
 	
 	<!-- 로그인 페이지 -->
