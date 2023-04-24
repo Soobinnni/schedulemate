@@ -1,5 +1,7 @@
 package com.schedulemate.mapper;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.schedulemate.member.domain.MemberAuth;
 import com.schedulemate.member.domain.MemberVO;
 
@@ -12,4 +14,8 @@ public interface MemberMapper {
 	public int createAuth(MemberAuth auth) throws Exception;
     //아이디 중복 체크
 	public int idCheck(MemberVO member) throws Exception;
+	//userid를 등록한 적 있는 지 조회
+	public int botUserIdChk(int mnum) throws Exception;
+	//userid를 등록
+	public int botUserIdRegiste(@Param("mbotUserId") String mbotUserId, @Param("mnum") int mnum) throws Exception;
 }

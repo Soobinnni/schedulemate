@@ -20,8 +20,8 @@
 	<hr>
 	<div class='mypage_userid_info_detail'>
 		<div class="mypage_userid_info_form_container">
-			<form action="">
-				<input name="sdUserId" type='text' class='mypage_userid_info_input'
+			<form class='userid_form' action="/member/botUserIdRegiste" method="post">
+				<input name="mbotUserId" type='text' class='mypage_userid_info_input'
 					placeholder="userId를 입력해주세요"> <input
 					class='mypage_userid_info_sub_btn' type="submit" value='입력' />
 				<sec:csrfInput />
@@ -44,34 +44,48 @@
 						$
 								.ajax({
 									type : "post",
-									url : "/send/sendUserIdChk",
+									url : "/member/botUserIdChk",
 									success : function(response) {
 										if (response != 'null') { //등록 정보 있음
 											var sdUserIdInput = $('input[name="sdUserId"]');
 											if (sdUserIdInput.val() !== null) {
 												var formContainer = $('.mypage_userid_info_detail');
 												formContainer
-														.find(
-																'.mypage_userid_input_form')
-														.removeClass(
-																'mypage_userid_input_form')
-														.addClass(
-																'mypage_userid_modify_form')
+														.find('.userid_form')
+														.attr('action', '/member/mypage/modifyBotUserId')
+														.attr('method', 'get');
+												formContainer
 														.find(
 																'.mypage_userid_info_input')
+														.removeClass('mypage_userid_info_input')
+														.addClass('mypage_userid_info_modify_input')
 														.attr('placeholder',
-																'*************');
+																'*************')
+														.attr('readonly',
+																'readonly');
 												formContainer
 														.find(
 																'.mypage_userid_info_sub_btn')
-														.removeClass(
-																'mypage_userid_info_sub_btn')
-														.addClass(
-																'mypage_userid_info_modify_bt')
+														.removeClass('mypage_userid_info_sub_btn')
+														.addClass('mypage_userid_info_modify_btn')
 														.val('수정하기');
 											}
 										}
 									}
 								});
+						//submit 전 검사
+						$(".mypage_userid_info_sub_btn").on("click", function(){
+							var inputData = $(".mypage_userid_info_input").val();
+							if (inputData=='') {
+								alert('내용을 입력해주세요!');
+								return
+							} else {
+								$(".userid_form").submit();
+							}
+						});
+						//수정 페이지로 이동
+						$(".mypage_userid_info_modify_btn").on("click", function(){
+							window.location.href = '/member/modifyBotUserId';
+						});
 					});
 </script>

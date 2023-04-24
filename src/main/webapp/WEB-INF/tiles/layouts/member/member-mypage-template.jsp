@@ -87,7 +87,7 @@
 											.on(
 													"click",
 													function() {
-														window.location.href = "/member/mypage/registerUserId";
+														window.location.href = "/member/mypage/registerBotUserId";
 													});
 										});
 					</script>

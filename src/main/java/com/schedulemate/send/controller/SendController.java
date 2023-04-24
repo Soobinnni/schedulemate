@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.schedulemate.send.service.SendService;
+/*import com.schedulemate.send.service.SendService;*/
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -22,22 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 public class SendController {
 	@Value("${t.apitoken}")
 	private static String tApiToken;
-	@Autowired
-	private SendService service;
-	
-	@PostMapping("/sendUserIdChk")
-	public ResponseEntity<String> sendUserIdChk(HttpServletRequest request) throws Exception{
-		int mnum =(Integer) request.getSession(true).getAttribute("mnum");
-		
-		int responseResult = service.sendUserIdChk(mnum);
-		
-		System.out.println("userId 조회 결과 : "+responseResult);
-		if (responseResult == 0) {
-			return new ResponseEntity<>("null", HttpStatus.OK);	
-		} else {
-			return new ResponseEntity<>("not null", HttpStatus.OK);	
-		}
-	}
 
 	public static void funcTelegram(String chatId, String text) {
 		String Token = tApiToken;

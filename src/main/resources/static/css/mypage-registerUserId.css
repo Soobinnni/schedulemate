@@ -31,12 +31,15 @@
 	height : 150px;
 	margin-top : 80px;
 }
-.mypage_userid_info_input {
+.mypage_userid_info_input, .mypage_userid_info_modify_input {
 	width : 320px;
 	height : 35px;
 	padding-left : 20px;
 }
-.mypage_userid_info_sub_btn {
+.mypage_userid_info_modify_input {
+	width : 300px;
+}
+.mypage_userid_info_sub_btn, .mypage_userid_info_modify_btn, .modify_success_btn, .modify_cancel_btn {
 	height : 45px;
 	width : 45px;
 	border-radius: 10px;
@@ -46,7 +49,28 @@
 	font-weight: 700;
 	cursor: pointer;
 }
+.mypage_userid_info_modify_btn {
+	width : 65px;
+}
+.modify_success_btn, .modify_cancel_btn {
+	width : 70px;
+}
 .mypage_userid_info_sub_btn:hover {
+	color: black;
+	background: white;
+	border : 1px solid black;
+}
+.mypage_userid_info_modify_btn:hover {
+	color: black;
+	background: white;
+	border : 1px solid black;
+}
+.modify_success_btn:hover {
+	color: black;
+	background: white;
+	border : 1px solid black;
+}
+.modify_cancel_btn:hover {
 	color: black;
 	background: white;
 	border : 1px solid black;
