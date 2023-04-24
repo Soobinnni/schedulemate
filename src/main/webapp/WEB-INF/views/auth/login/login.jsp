@@ -1,30 +1,32 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <!-- css -->
 <link rel="stylesheet" type="text/css" href="/css/auth.css">
 
 <div id="login_container">
 	<div class="login_content">
 		<div class="login_box">
-			<div class = 'login_box_first'>
+			<div class='login_box_first'>
 				<div class='auth_content'>
-					<div class='auth_text'><label for="username">아이디</label><br><br><label for="password">비밀번호</label></div>  
+					<div class='auth_text'>
+						<label for="username">아이디</label><br>
+						<br>
+						<label for="password">비밀번호</label>
+					</div>
 					<div class='auth_box'>
 						<form action="/login" method="post" class="login_submit_form">
-							<input type='text' name='username'
-								id="username" placeholder="아이디"><br>
-							<input type='password' name='password' id="password"
-								placeholder="비밀번호">
-							<sec:csrfInput />
-						</form>	
-					</div>		
+							<input type='text' name='username' id="username"
+								placeholder="아이디"><br> <input type='password'
+								name='password' id="password" placeholder="비밀번호">
+					</div>
 				</div>
 				<div class='submit_content'>
-					<input class='login_submit' type="submit" value="Login">		
-				</div>	
-			</div>	
+					<input class='login_submit' type="submit" value="Login">
+				</div>
+			</div>
 			<!-- 로그인 상태유지 체크박스 -->
 			<div align="left" style="margin-top: 17px">
 				<label for="login_status" style="position: static">로그인 상태유지</label>
@@ -35,6 +37,8 @@
 					href="/memberFindPassword">비밀번호 찾기</a>
 				</span>
 			</div>
+			<sec:csrfInput />
+			</form>
 			<c:if test="${ not empty error }">
 				<div style="color: red; margin-top: 15px; margin-left: 5px"
 					align="left">
@@ -46,7 +50,7 @@
 </div>
 
 <script>
-	$(".login_submit").on("click", function(){
+	$(".login_submit").on("click", function() {
 		$(".login_submit_form").submit();
 	});
 </script>

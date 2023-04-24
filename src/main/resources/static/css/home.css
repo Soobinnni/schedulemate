@@ -1,4 +1,7 @@
 /* schedule_calendar */
+a {
+	text-decoration: none;
+}
 .schedule_calendar {
 	box-sizing: border-box;
 	/* Auto layout */
@@ -308,7 +311,14 @@
 .popup_send_select_btn {
 	display:inline-block;float:left;margin-left:10px;cursor: pointer;
 	border-bottom: 2px solid gray;
-	width : 50px;
+	width : 65px;
+	padding-bottom:1px;
+	color :gray;
+}
+.popup_send_cancel_btn {
+	display:inline-block;clear:both;cursor: pointer;
+	border-bottom: 2px solid gray;
+	width : 65px;
 	padding-bottom:1px;
 	color :gray;
 }
@@ -319,8 +329,14 @@
 	padding-bottom:1px;
 	color :gray;
 }
-.popup_send_select_btn:hover, .popup_close_btn:hover {
+.popup_send_select_btn:hover {
 	border-bottom: 2px solid black;
 	color :black;
-	
+} 
+.popup_close_btn:hover {
+	border-bottom: 2px solid black;
+	color :black;
+} .popup_send_cancel_btn:hover {
+	border-bottom: 2px solid black;
+	color :black;
 } 

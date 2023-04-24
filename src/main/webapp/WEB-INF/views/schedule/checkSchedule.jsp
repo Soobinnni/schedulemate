@@ -10,11 +10,7 @@
 	<div id="calendar_header">
 		<div id="calendar_nav">
 			<div class='calendar_nav_grop'>
-				<button type="button" class="month-move" id="calendar_nav_btn_prev"
-					data-ym="">◀</button>
 				<span id="calendar_title">2023.01</span>
-				<button type="button" class="month-move" id="calendar_nav_btn_next"
-					data-ym="">▶</button>
 			</div>
 		</div>
 		<div id='schedule_category'>
@@ -34,12 +30,13 @@
 				<span class='more_btn'><img src="/images/더보기.png"
 					width="12px" /></span>
 				<div class="popup-container">
-					<div class="popup-content">
-						<div align="center" style='margin-top:10px;'>
-							선택 날짜의 스케줄 <br>알림 보내기
-						</div>
-						<div style='margin-top:20px;'>
-							<div align="center" class='popup_send_select_btn'>선택하기</div>
+					<div class="popup-content"
+						style='min-height: 50px; min-width: 300px'>
+						<div align="center" style='margin-top: 10px'>
+							<div align="center" class='popup_send_select_btn'>보내기</div>
+							<div align="center" class='popup_send_cancel_btn'>
+								<a href='/schedule/home' style="color: gray">취소</a>
+							</div>
 							<div align="center" class='popup_close_btn'>닫기</div>
 						</div>
 					</div>
@@ -65,27 +62,6 @@
 </div>
 <script>
 //달력 동적 생성 start
-function prevMonth(date) {
-	var target = new Date(date);
-	target.setDate(1);
-	target.setMonth(target.getMonth() - 1);
-
-	return getYmd(target);
-}
-
-function nextMonth(date) {
-	var target = new Date(date);
-	target.setDate(1);
-	target.setMonth(target.getMonth() + 1);
-
-	return getYmd(target);
-}
-
-function getYmd(target) {
-	var month = ('0' + (target.getMonth() + 1)).slice(-2);
-	return [target.getFullYear(), month, '01'].join('-');
-}
-
 function fullDays(date) {
 	var target = new Date(date);
 	var year = target.getFullYear();
@@ -126,12 +102,10 @@ function fullDays(date) {
 }
 function drawMonth(date) {
 	$('#calendar_title').text(date.substring(0, 7).replace('-', '.'));
-	$('#calendar_nav_btn_prev').data('ym', prevMonth(date));
-	$('#calendar_nav_btn_next').data('ym', nextMonth(date));
 
 	$('#calandar_content').empty();
 
-	var div = '<div class="__REST__ __CLASS__ __TODAY__"><span style="display:block" name="schedule-date" __VALUE__>__DATE__</span></div>';
+	var div = '<div class="__REST__ __CLASS__ __TODAY__" style="cursor:default"><span style="display:block" name="schedule-date" __VALUE__>__DATE__</span></div>';
 	var value = date.substring(0, 8).replace('-', '.').replace('-', '.');
 	var divClass;
 	var hasDate;
@@ -159,23 +133,19 @@ function drawMonth(date) {
 	}
 }
 $(function() {
-	var date = (new Date()).toISOString().substring(0, 10);
+	var sdate = "${sdate}";
+	console.log(sdate);
+	var year = sdate.slice(0, 4);
+	var month = sdate.slice(5, 7);
+	var date = sdate.slice(8, 10);
+	var date = (new Date(year, month, 1).toISOString().substring(0, 10));
 	drawMonth(date);
-
-	$('.month-move').on('click', function(e) {
-		e.preventDefault();
-
-		//새로운 달을 그림.
-		drawMonth($(this).data('ym'));
-		//새로운 스케줄을 가져옴
-		var sdate = $('#calendar_title').text();
-		readScheduleAjax(sdate);
-	});
 });
 //달력 동적 생성 end
 
 //페이지 준비 start
-$(document).ready(function() {		
+$(document).ready(function() {
+
 	// ajax 통신을 위한 csrf 설정
 	var token = $("meta[name='_csrf']").attr("content");
 	var header = $("meta[name='_csrf_header']").attr(
@@ -187,13 +157,8 @@ $(document).ready(function() {
 	var sdate = ${ sdate }; //현 날짜(yyyy.mm)
 	//페이지가 준비되면, schedule에 따른 schedulelist를 ajax로 불러옴
 	readScheduleAjax(sdate);
-
-	//스케줄 날짜 일 클릭 이벤트(스케줄 입력 폼으로 이동)
-	$(document).on('click', '.has-date', function() {
-		var sdate = $(this).find('span[name="schedule-date"]').attr('value'); //클릭한 날 날짜 정보
-		window.location.href = '/schedule/detail?sdate=' + sdate;
-	});
-
+	
+	
 
 	//스케줄이 있는 날 마우스 오버 이벤트 처리(팝업을 띄운다)
 	$(document).on('mouseenter', '.has-schedulelist', function() {
@@ -266,23 +231,6 @@ $(document).ready(function() {
 			$popupContainer.fadeOut();
 		});
 	});
-	$(".popup_send_select_btn").on("click", function(){
-		//userid가 입력되어 있는 지 조회.
-		$.ajax({
-			type: "post",
-			url: "/member/botUserIdChk",
-			success: function(response) {
-				if(response == 'null'){ //등록한 적 없음
-					alert('먼저 봇 유저아이디를 입력해야합니다!');
-					window.location.href = '/member/mypage/registerBotUserId'
-				} else { //등록 있음 >> 체크
-					var sdate = $('#calendar_title').text();
-					//.has-schedulelist를 찾아서 날짜 옆에 체크박스를 만든다
-					window.location.href = '/schedule/checkSchedule?sdate='+sdate;
-				}
-			}
-		});
-	});
 });
 //페이지 준비 end
 
@@ -343,6 +291,19 @@ function addSchedulelist(response) {
 			$div_schedulelist.append($span);
 			$(this).append($div_schedulelist);
 		}
+	});
+	// .has-schedulelist 요소의 형제인 span 요소를 찾아서 처리
+	$(".has-schedulelist").prev("span").each(function() {
+	  // 새로운 체크박스 엘리먼트를 만들고 속성을 설정
+	  var $checkbox = $("<input>").attr({
+	    type: "checkbox",
+	    class: "submit_checkbox",
+	    name: "sdate",
+	    value: $(this).attr("value")
+	  });
+	  
+	  // 새로 만든 체크박스를 span 요소 왼쪽에 삽입
+	  $(this).before($checkbox);
 	});
 }
 

@@ -53,6 +53,15 @@ public class ScheduleController {
 
 		return "schedule.home";
 	}
+	@GetMapping("/checkSchedule")
+	public String checkSchedule(Model model, String sdate, HttpServletRequest request) throws Exception { 
+		int mnum = (Integer) request.getSession(true).getAttribute("mnum");
+		
+		model.addAttribute("mnum", mnum);
+		model.addAttribute("sdate", sdate);
+
+		return "schedule.checkSchedule";
+	}
 
 	//스케줄보기
 	@GetMapping("/detail")
