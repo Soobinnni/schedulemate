@@ -95,11 +95,17 @@
 		SET  m_botuserId = #{mbotUserId}
 		WHERE m_num = #{mnum}
 	</update>
-	<!-- userId 읽기 -->
-	<select id="botUserIdRead" resultType="String">
+	<!-- mnum으로 userId 읽기 -->
+	<select id="botUserIdReadbyMnum" resultType="String">
 		SELECT m_botuserId 
 		FROM member
 		WHERE m_num = #{mnum}
+	</select>
+	<!-- snum으로 userId 읽기 -->
+	<select id="botUserIdReadbySnum" resultType="String">
+		SELECT m.m_botuserId 
+		FROM member m JOIN schedule s ON m.m_num = s.m_num
+		WHERE s_num = #{snum}
 	</select>
 	
 	<!-- 데일리 알림 상태 업데이트 -->

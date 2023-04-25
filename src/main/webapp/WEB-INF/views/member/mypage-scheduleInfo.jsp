@@ -89,48 +89,56 @@ $(document).ready(function() {
 	$(document).ajaxSend(function(e, xhr, options) {
 		xhr.setRequestHeader(header, token);
 	});
-
 	//데일리 알림 체크 / 언체크 이벤트
 	$(".mdaily_btn").change(function() {
-		var url = "Mdaily";
-		var value;
-		if ($(this).is(":checked")) { //체크 이벤트
-			value = 1;
-		} else { //언체크 이벤트
-			value = 0;
-		};
-		var scheduleJSON = {
-			"mdaily": value
-		};
-		mAlertStatusUpdate(url, scheduleJSON);
+		var isUserIDDaved = ChkUserIDIsSaved();
+		if (isUserIDDaved) {//유저 아이디 입력돼 있는지 확인
+			var url = "Mdaily";
+			var value;
+			if ($(this).is(":checked")) { //체크 이벤트
+				value = 1;
+			} else { //언체크 이벤트
+				value = 0;
+			};
+			var scheduleJSON = {
+				"mdaily": value
+			};
+			mAlertStatusUpdate(url, scheduleJSON);
+		}
 	});
 	//매주 알림 체크 / 언체크 이벤트
 	$(".mweekend_btn").change(function() {
-		var url = "Mweekend";
-		var value;
-		if ($(this).is(":checked")) { //체크 이벤트
-			value = 1;
-		} else { //언체크 이벤트
-			value = 0;
-		};
-		var scheduleJSON = {
-			"mweekend": value
-		};
-		mAlertStatusUpdate(url, scheduleJSON);
+		var isUserIDDaved = ChkUserIDIsSaved();
+		if (isUserIDDaved) {//유저 아이디 입력돼 있는지 확인
+			var url = "Mweekend";
+			var value;
+			if ($(this).is(":checked")) { //체크 이벤트
+				value = 1;
+			} else { //언체크 이벤트
+				value = 0;
+			};
+			var scheduleJSON = {
+				"mweekend": value
+			};
+			mAlertStatusUpdate(url, scheduleJSON);	
+		}
 	});
 	//매달 중요 알림 체크 / 언체크 이벤트
 	$(".mimportantmonth_btn").change(function() {
-		var url = "Mimportantmonth";
-		var value;
-		if ($(this).is(":checked")) { //체크 이벤트
-			value = 1;
-		} else { //언체크 이벤트
-			value = 0;
-		};
-		var scheduleJSON = {
-			"mimportantmonth": value
-		};
-		mAlertStatusUpdate(url, scheduleJSON);
+		var isUserIDDaved = ChkUserIDIsSaved();
+		if (isUserIDDaved) {//유저 아이디 입력돼 있는지 확인
+			var url = "Mimportantmonth";
+			var value;
+			if ($(this).is(":checked")) { //체크 이벤트
+				value = 1;
+			} else { //언체크 이벤트
+				value = 0;
+			};
+			var scheduleJSON = {
+				"mimportantmonth": value
+			};
+			mAlertStatusUpdate(url, scheduleJSON);
+		}
 	});
 
 	function mAlertStatusUpdate(url, data) {
@@ -142,6 +150,22 @@ $(document).ready(function() {
 			contentType: "application/json; charset=utf-8",
 			success: function(response) {
 				alert('스케줄 알림 \n상태를 변경했습니다!');
+			}
+		});
+	}
+	function ChkUserIDIsSaved(){
+		//userid가 입력되어 있는 지 조회.
+		$.ajax({
+			type: "post",
+			url: "/member/botUserIdChk",
+			success: function(response) {
+				if(response == 'null'){ //등록한 적 없음
+					alert('먼저 봇 유저아이디를 입력해야합니다!');
+					window.location.href = '/member/mypage/registerBotUserId'
+					return false;
+				} else { //등록 있음 >> 체크
+					return true;
+				}
 			}
 		});
 	}

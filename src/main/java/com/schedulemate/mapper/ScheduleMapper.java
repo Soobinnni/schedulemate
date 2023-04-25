@@ -1,5 +1,9 @@
 package com.schedulemate.mapper;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.schedulemate.schedule.domain.ScheduleVO;
@@ -12,4 +16,6 @@ public interface ScheduleMapper {
 	public int getScheduleById(Integer snum) throws Exception;
 	//스케줄 read
 	public ScheduleVO read(@Param("mnum") int mnum, @Param("sdate") String sdate) throws Exception;
+	//데일리 알림 스케줄 m_botUserId : s_num Map형태로 받기
+	public List<Integer> getScheduleNumlistSendDaily(@Param("sdate") String sdate) throws Exception;
 }

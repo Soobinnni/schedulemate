@@ -24,9 +24,12 @@ public interface MemberMapper {
 	// userid를 등록
 	public int botUserIdRegiste(@Param("mbotUserId") String mbotUserId, @Param("mnum") int mnum) throws Exception;
 
-	// userid 읽기
-	public String botUserIdRead(@Param("mnum") int mnum) throws Exception;
-
+	// Mnum으로 userid 읽기
+	public String botUserIdReadbyMnum(@Param("mnum") int mnum) throws Exception;
+	
+	// Snum으로 userid 읽기
+	public String botUserIdReadbySnum(@Param("snum") int snum) throws Exception;
+	
 	// 마이페이지 데일리 알람 업데이트
 	public int updateMdailyStatus(MemberVO vo) throws Exception;
 

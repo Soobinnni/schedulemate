@@ -9,6 +9,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -65,33 +68,76 @@ public class SendServiceImpl implements SendService {
 		}
 
 		// scheduleMap
-		String mbotUserId = memberMapper.botUserIdRead(mnum); // 봇 채팅 유저아이디
-		String sendText = makeSendMessage(scheduleMap); // 전송할 텍스트
+		String mbotUserId = memberMapper.botUserIdReadbyMnum(mnum); // 봇 채팅 유저아이디
+		String sendText = makeChkSendMessage(scheduleMap); // 전송할 텍스트
 
 		// api 통신, 텍스트 전송
 		sendTelegram(mbotUserId, sendText);
+		System.out.println("체크 알림 발송 완료");
 
 	};
 
-	// 전송 문자 만들기
-	private String makeSendMessage(Map<String, List<SchedulelistVO>> scheduleMap) throws ParseException {
-		String sentText = "★스케줄 메이트 입니다. 일정을 확인해주세요!★";
-		sentText += "%0A";
+	// 데일리 알림 발송 설정 사용자에게 스케줄 전송하기
+	public void sendDailySchedule() throws Exception {
+		LocalDate currentMonth = LocalDate.now().plusDays(1);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+		String sdate = currentMonth.format(formatter); // 내일 날짜의 sdate
+
+		// 데일리 발송 알림이 돼 있고, 내일 날짜에 스케줄이 있는 snum 반환
+		List<Integer> scheduleNumlistSendDaily = scheduleMapper.getScheduleNumlistSendDaily(sdate);
+		if (scheduleNumlistSendDaily.size()!=0) {
+			// snum을 기준으로 mbotUserId List<SchedulelistVO>담아 텍스트 전송
+			for (Integer snum : scheduleNumlistSendDaily) {
+				// mbotUserId key로담아오기
+				String chatId = memberMapper.botUserIdReadbySnum(snum);
+				// List<SchedulelistVO> value로 담아오기
+				List<SchedulelistVO> schedulelist = schedulelistMapper.read(snum);
+				String text = makeDailySendMessage(schedulelist, sdate); // 메시지 만들기
+
+				// 발송
+				sendTelegram(chatId, text);
+				System.out.println("데일리 알림 발송 완료");
+			}
+		} else {
+			System.out.println("전송할 데일리 알림 발송 없음");
+		}
+	};
+
+	// 체크한 스케줄 전송 문자 만들기
+	private String makeChkSendMessage(Map<String, List<SchedulelistVO>> scheduleMap) throws ParseException {
+		String sendText = "★스케줄 메이트 입니다. 일정을 확인해주세요!★";
+		sendText += "%0A";
 
 		Set<String> keySet = scheduleMap.keySet(); // sdate keySet
 		for (String key : keySet) {
 			List<SchedulelistVO> schedulelist = scheduleMap.get(key); // 같은 날짜의 스케줄 리스트
-			sentText += "%0A";
-			sentText += "%0A";
-			sentText += "▶ "+formatDate(key)+" ◀"; // 날짜
+			sendText += "%0A";
+			sendText += "%0A";
+			sendText += "▶ " + formatDate(key) + " ◀"; // 날짜
 			for (SchedulelistVO schedule : schedulelist) {
-				sentText += "%0A";
+				sendText += "%0A";
 				String category = changeCategoryToString(schedule.getSlcategory());
 				String time = changeTimeToString(schedule.getSlplannedTime(), schedule.getSlplannedMin());
 				String content = schedule.getSlcontent();
-				sentText += "⊙ ";
-				sentText += category + " " + time + " " + content;
+				sendText += "⊙ ";
+				sendText += category + " " + time + " " + content;
 			}
+		}
+		return sendText;
+	}
+
+	// 데일리 스케줄 전송 문자 만들기
+	private String makeDailySendMessage(List<SchedulelistVO> schedulelist, String sdate) throws ParseException {
+		String sentText = "★스케줄 메이트 데일리 스케줄 알림입니다!★";
+		sentText += "%0A%0A";
+		sentText += "▶ " + formatDate(sdate) + " ◀"; // 날짜
+		for (SchedulelistVO schedule : schedulelist) {
+			sentText += "%0A";
+			String category = changeCategoryToString(schedule.getSlcategory());
+			String time = changeTimeToString(schedule.getSlplannedTime(), schedule.getSlplannedMin());
+			String content = schedule.getSlcontent();
+			sentText += "⊙ ";
+			sentText += category + " " + time + " " + content;
 		}
 		return sentText;
 	}
@@ -138,15 +184,12 @@ public class SendServiceImpl implements SendService {
 		}
 		return timeToString;
 	}
-	
-	//telegram api 통신. 스케줄을 보냄
+
+	// telegram api 통신. 스케줄을 보냄
 	private void sendTelegram(String chatId, String text) {
 		String Token = tApiToken;
-
 		BufferedReader in = null;
-		
-		String send = "https://api.telegram.org/bot" + Token + "/sendmessage?chat_id=" + chatId + "&text=" + text;
-		System.out.println(send);
+
 		try {
 			// 통신
 			URL obj = new URL(
@@ -170,6 +213,6 @@ public class SendServiceImpl implements SendService {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-		}	
+		}
 	}
 }
