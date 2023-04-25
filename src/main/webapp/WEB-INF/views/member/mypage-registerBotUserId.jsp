@@ -17,7 +17,7 @@
 			<i>알림 봇 아이디 입력 / 수정</i>
 		</h2>
 	</div>
-	<hr>
+	<hr style='width:800px'>
 	<div class='mypage_userid_info_detail'>
 		<div class="mypage_userid_info_form_container">
 			<form class='userid_form' action="/member/botUserIdRegiste" method="post">

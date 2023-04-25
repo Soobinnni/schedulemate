@@ -101,4 +101,25 @@
 		FROM member
 		WHERE m_num = #{mnum}
 	</select>
+	
+	<!-- 데일리 알림 상태 업데이트 -->
+	<update id="updateMdailyStatus" parameterType="com.schedulemate.member.domain.MemberVO">
+		UPDATE member
+		SET m_daily = #{mdaily}
+		WHERE m_num = #{mnum}
+	</update>
+	
+	<!-- 매주 알림 상태 업데이트 -->
+	<update id="updateMweekendStatus" parameterType="com.schedulemate.member.domain.MemberVO">
+		UPDATE member
+		SET m_weekend = #{mweekend}
+		WHERE m_num = #{mnum}
+	</update>
+	
+	<!-- 매달 중요 알림 상태 업데이트 -->
+	<update id="updateMimportantmonthStatus" parameterType="com.schedulemate.member.domain.MemberVO">
+		UPDATE member
+		SET m_importantmonth = #{mimportantmonth}
+		WHERE m_num = #{mnum}
+	</update>
 </mapper>

@@ -26,4 +26,13 @@ public interface MemberMapper {
 
 	// userid 읽기
 	public String botUserIdRead(@Param("mnum") int mnum) throws Exception;
+
+	// 마이페이지 데일리 알람 업데이트
+	public int updateMdailyStatus(MemberVO vo) throws Exception;
+
+	// 마이페이지 매주 알람 업데이트
+	public int updateMweekendStatus(MemberVO vo) throws Exception;
+
+	// 마이페이지 매달 중요 알람 업데이트
+	public int updateMimportantmonthStatus(MemberVO vo) throws Exception;
 }

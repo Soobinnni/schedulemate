@@ -36,4 +36,16 @@ public class MemberServiceImpl implements MemberService {
 	public int botUserIdRegiste(String mbotUserId, int mnum) throws Exception{
 		return memberMapper.botUserIdRegiste(mbotUserId, mnum);
 	};
+	//마이페이지 데일리 알람 업데이트
+	public int updateMdailyStatus(MemberVO vo) throws Exception{
+		return memberMapper.updateMdailyStatus(vo);
+	};
+	//마이페이지 매주 알람 업데이트
+	public int updateMweekendStatus(MemberVO vo) throws Exception{
+		return memberMapper.updateMweekendStatus(vo);
+	};
+	//마이페이지 매달 중요 알람 업데이트
+	public int updateMimportantmonthStatus(MemberVO vo) throws Exception{
+		return memberMapper.updateMimportantmonthStatus(vo);
+	};
 }

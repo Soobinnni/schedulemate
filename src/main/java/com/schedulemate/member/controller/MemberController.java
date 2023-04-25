@@ -73,6 +73,32 @@ public class MemberController {
 	public String modifyBotUserId() throws Exception {
 		return "mypage.modifyBotUserId";
 	}
+	
+	//마이페이지 데일리 알람 업데이트
+	@PostMapping("/mypage/updateMdailyStatus")
+	public ResponseEntity<String> updateMdailyStatus(@RequestBody MemberVO vo, HttpServletRequest request) throws Exception {
+		vo.setMnum((Integer)request.getSession(true).getAttribute("mnum"));
+		int success = memberService.updateMdailyStatus(vo);
+		System.out.println("데일리 알람 상태 변경 완료 : "+success);
+		return new ResponseEntity<String>("update success", HttpStatus.OK);
+	}	
+	//마이페이지 매주 알람 업데이트
+	@PostMapping("/mypage/updateMweekendStatus")
+	public ResponseEntity<String> updateMweekendStatus(@RequestBody MemberVO vo, HttpServletRequest request) throws Exception {
+		vo.setMnum((Integer)request.getSession(true).getAttribute("mnum"));
+		int success = memberService.updateMweekendStatus(vo);
+		System.out.println("매주 알람 상태 변경 완료 : "+success);
+		return new ResponseEntity<String>("update success", HttpStatus.OK);
+	}	
+	//마이페이지 매달 중요 알람 업데이트
+	@PostMapping("/mypage/updateMimportantmonthStatus")
+	public ResponseEntity<String> updateMimportantmonthStatus(@RequestBody MemberVO vo, HttpServletRequest request) throws Exception {
+		vo.setMnum((Integer)request.getSession(true).getAttribute("mnum"));
+		int success = memberService.updateMimportantmonthStatus(vo);
+		System.out.println("매달 중요 알람 상태 변경 완료 : "+success);
+		return new ResponseEntity<String>("update success", HttpStatus.OK);
+	}
+	
 
 	//bot userid체크
 	@PostMapping("/botUserIdChk")

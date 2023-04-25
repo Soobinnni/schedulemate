@@ -31,9 +31,9 @@ a {
 }
 .mypage_nav li {
 	list-style: none;
-	margin-bottom: 40px;
+	margin-bottom: 80px;
 	border-bottom: 3px dashed gray;
-	padding-bottom:12px;
+	padding-bottom:20px;
 	font-weight: 700;
 	width : 120px;
 	cursor: pointer;

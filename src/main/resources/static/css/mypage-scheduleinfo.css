@@ -15,7 +15,8 @@
 
 .mypage_schedule_info_detail {
 	width: 630px;
-	margin: 29px auto;
+	margin: 60px auto;
+	margin-left: 55px;
 	box-shadow: 5px 5px #6e6e6e;
 	border: 3px solid #6e6e6e;
 }
