@@ -90,61 +90,62 @@ $(document).ready(function() {
 		xhr.setRequestHeader(header, token);
 	});
 	//데일리 알림 체크 / 언체크 이벤트
-	$(".mdaily_btn").change(function() {
-		var isUserIDDaved = ChkUserIDIsSaved();
-		if (isUserIDDaved) {//유저 아이디 입력돼 있는지 확인
-			var url = "Mdaily";
-			var value;
-			if ($(this).is(":checked")) { //체크 이벤트
-				value = 1;
-			} else { //언체크 이벤트
-				value = 0;
-			};
-			var scheduleJSON = {
-				"mdaily": value
-			};
-			mAlertStatusUpdate(url, scheduleJSON);
-		}
+	$(".mdaily_btn").change(function(event) {
+		var $selector = $(".mdaily_btn");
+		var url = "Mdaily";
+		var type = "mdaily";
+		ChkUserIDIsSaved($selector, url, type);//유저 아이디 입력돼 있는지 확인
 	});
 	//매주 알림 체크 / 언체크 이벤트
-	$(".mweekend_btn").change(function() {
-		var isUserIDDaved = ChkUserIDIsSaved();
-		if (isUserIDDaved) {//유저 아이디 입력돼 있는지 확인
-			var url = "Mweekend";
-			var value;
-			if ($(this).is(":checked")) { //체크 이벤트
-				value = 1;
-			} else { //언체크 이벤트
-				value = 0;
-			};
-			var scheduleJSON = {
-				"mweekend": value
-			};
-			mAlertStatusUpdate(url, scheduleJSON);	
-		}
+	$(".mweekend_btn").change(function(event) {
+		var $selector = $(".mweekend_btn");
+		var url = "Mweekend";
+		var type = "mweekend";
+		ChkUserIDIsSaved($selector, url, type);//유저 아이디 입력돼 있는지 확인
 	});
 	//매달 중요 알림 체크 / 언체크 이벤트
-	$(".mimportantmonth_btn").change(function() {
-		var isUserIDDaved = ChkUserIDIsSaved();
-		if (isUserIDDaved) {//유저 아이디 입력돼 있는지 확인
-			var url = "Mimportantmonth";
-			var value;
-			if ($(this).is(":checked")) { //체크 이벤트
-				value = 1;
-			} else { //언체크 이벤트
-				value = 0;
-			};
-			var scheduleJSON = {
-				"mimportantmonth": value
-			};
-			mAlertStatusUpdate(url, scheduleJSON);
-		}
+	$(".mimportantmonth_btn").change(function(event) {
+		var $selector = $(".mimportantmonth_btn");
+		var url = "Mimportantmonth";
+		var type = "mimportantmonth";
+		ChkUserIDIsSaved($selector, url, type);//유저 아이디 입력돼 있는지 확인
 	});
+	
+	function ChkUserIDIsSaved($selector, url, type){
+		//userid가 입력되어 있는 지 조회.
+		$.ajax({
+			type: "post",
+			url: "/member/botUserIdChk",
+			success: function(response) {
+				if(response == 'null'){ //등록한 적 없음 - 등록 페이지로 이동
+					alert('먼저 봇 유저아이디를 입력해야합니다!');
+					window.location.href = '/member/mypage/registerBotUserId'
+					return;
+				} else { //등록 전적이 있으면, 업데이트 가능.
+					var sendData = getAlarmData($selector, url, type);
+					mAlertStatusUpdate(sendData[0], sendData[1])
+				}
+			}
+		});
+	}
+	function getAlarmData($selector, url, type){
+		var url = "/member/mypage/update"+url+"Status";
+		var value;
+		if ($selector.is(":checked")) { //체크 이벤트
+			value = 1;
+		} else { //언체크 이벤트
+			value = 0;
+		};
+		var scheduleJSON = {};
+		scheduleJSON[type] = value;
+		var sendData = [url,scheduleJSON ];
+		return sendData;
+	}
 
 	function mAlertStatusUpdate(url, data) {
 		console.log(data);
 		$.ajax({
-			url: "/member/mypage/update"+url+"Status",
+			url: url,
 			type: "post",
 			data: JSON.stringify(data),
 			contentType: "application/json; charset=utf-8",
@@ -153,21 +154,6 @@ $(document).ready(function() {
 			}
 		});
 	}
-	function ChkUserIDIsSaved(){
-		//userid가 입력되어 있는 지 조회.
-		$.ajax({
-			type: "post",
-			url: "/member/botUserIdChk",
-			success: function(response) {
-				if(response == 'null'){ //등록한 적 없음
-					alert('먼저 봇 유저아이디를 입력해야합니다!');
-					window.location.href = '/member/mypage/registerBotUserId'
-					return false;
-				} else { //등록 있음 >> 체크
-					return true;
-				}
-			}
-		});
-	}
+
 });
 </script>
