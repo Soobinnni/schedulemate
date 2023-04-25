@@ -176,6 +176,7 @@ $(function() {
 
 //페이지 준비 start
 $(document).ready(function() {		
+	
 	// ajax 통신을 위한 csrf 설정
 	var token = $("meta[name='_csrf']").attr("content");
 	var header = $("meta[name='_csrf_header']").attr(
@@ -319,6 +320,7 @@ function addSchedulelist(response) {
 			var scheduleJSON = {}; // 스케줄 정보를 저장할 배열
 			// 각 스케줄에 대해서 처리
 			$.each(scheduleList, function(index, schedule) {
+				var snum = schedule.snum; // 스케줄 타이틀
 				var slcategory = schedule.slcategory; // 스케줄 타이틀
 				var slcontent = schedule.slcontent; // 스케줄 내용
 				var plannedTime = schedule.slplannedTime; // 예정된 시간, 분
@@ -326,6 +328,7 @@ function addSchedulelist(response) {
 
 				// 스케줄 정보 JSON저장
 				scheduleJSON[index] = {
+					"snum" : snum,	
 					"slcategory": slcategory,
 					"schedulecontent": ' ' + plannedTime + '시 ' + plannedMin + '분 ' + slcontent
 				};

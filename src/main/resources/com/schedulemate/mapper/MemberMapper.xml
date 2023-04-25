@@ -37,7 +37,8 @@
 			member_auth,
 			m_weekend,
 			m_daily,
-			m_importantmonth
+			m_importantmonth,
+			m_botUserId
 		FROM
 			member mem LEFT OUTER JOIN member_auth auth ON
 			mem.m_num =
@@ -94,4 +95,10 @@
 		SET  m_botuserId = #{mbotUserId}
 		WHERE m_num = #{mnum}
 	</update>
+	<!-- userId 읽기 -->
+	<select id="botUserIdRead" resultType="String">
+		SELECT m_botuserId 
+		FROM member
+		WHERE m_num = #{mnum}
+	</select>
 </mapper>
