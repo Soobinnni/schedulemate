@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.schedulemate.schedule.service.ScheduleService;
 import com.schedulemate.schedule.service.SchedulelistService;
-import com.schedulemate.send.service.SendService;
 import com.schedulemate.schedule.domain.ScheduleVO;
 import com.schedulemate.schedule.domain.SchedulelistVO;
 
@@ -36,8 +35,6 @@ public class ScheduleController {
 	private ScheduleService scheduleService;
 	@Autowired
 	private SchedulelistService schedulelistService;
-	@Autowired
-	private SendService sendService;
 	
 	@GetMapping("/home")
 	public String schedule(Principal principal, Model model, HttpServletRequest request) throws Exception { 

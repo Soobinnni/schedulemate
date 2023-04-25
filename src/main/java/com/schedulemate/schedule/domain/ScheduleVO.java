@@ -1,10 +1,6 @@
 package com.schedulemate.schedule.domain;
 
 import lombok.ToString;
-
-import java.sql.Date;
-import java.util.List;
-
 import lombok.Getter;
 import lombok.Setter;
 

@@ -11,5 +11,4 @@
 	 <typeAliases>
 		<package name="com.schedulemate.mapper" />
 	</typeAliases>  
-	
 </configuration>

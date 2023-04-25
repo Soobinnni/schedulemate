@@ -143,7 +143,6 @@ $(document).ready(function() {
 	}
 
 	function mAlertStatusUpdate(url, data) {
-		console.log(data);
 		$.ajax({
 			url: url,
 			type: "post",
@@ -154,6 +153,5 @@ $(document).ready(function() {
 			}
 		});
 	}
-
 });
 </script>

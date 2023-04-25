@@ -1,5 +1,4 @@
 --삭제는 다음 순서에 따르면 됨
-drop table send  purge ;
 drop table schedulelist purge ;
 drop table schedule purge ;
 drop table member_auth purge;
@@ -12,7 +11,6 @@ drop table persistent_logins purge;
 drop sequence member_seq;
 drop sequence schedule_seq;
 drop sequence schedulelist_seq;
-drop sequence send_seq;
 
 -- member table
 create table member (
@@ -72,20 +70,6 @@ create sequence schedulelist_seq
 start with 1
 increment by 1;
 
----- send table
---create table send (
---     sd_num number NOT NULL primary KEY ,--send 시퀀스번호
---     m_num number NOT NULL,--member 시퀀스번호(FK)
---     s_num number NOT NULL,--member 시퀀스번호(FK)
---     s_date varchar2(50) NOT NULL,--schedule 시퀀스번호(FK)
---    FOREIGN KEY ( m_num ) REFERENCES member ( m_num ),
---    FOREIGN KEY ( s_date, s_num ) REFERENCES schedule (s_date,  s_num )
---);
-----send sequence
---create sequence send_seq
---start with 1
---increment by 1;
-
 --쿠키 저장 테이블
 CREATE TABLE persistent_logins (
     username VARCHAR2(64) NOT NULL,
@@ -99,4 +83,3 @@ CREATE TABLE persistent_logins (
 alter sequence member_seq nocache;
 alter sequence schedule_seq nocache;
 alter sequence schedulelist_seq nocache;
---alter sequence send_seq nocache;
