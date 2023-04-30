@@ -8,8 +8,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.schedulemate.send.service.SendService;
+import com.schedulemate.send.service.SendInfoService;
+import com.schedulemate.send.service.TelegramBotService;
+
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,13 +20,24 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/send")
 public class SendController {
 	@Autowired
-	private SendService service;
+	private SendInfoService sendService;
+	@Autowired
+	private TelegramBotService botService;
 	
 	@PostMapping("/sendChkSchedule")
 	public ResponseEntity<String> sendChkSchedule(@RequestBody List<Integer> snumList, HttpServletRequest request) throws Exception {
 		int mnum = (Integer) request.getSession(true).getAttribute("mnum");
+		//스케줄 전송 정보 가져오는 서비스 호출
+		
+		Map<String, String> infoToBeSentToTelegramMap=sendService.getSendChkScheduleInfo(snumList, mnum);
+		
+		//보낼 정보
+		String chatId = infoToBeSentToTelegramMap.get("chatId");
+		String text = infoToBeSentToTelegramMap.get("text");
+		
+		botService.sendMessage(chatId, text);
+		
 		//스케줄 전송 서비스 호출
-		service.sendChkSchedule(snumList, mnum);
 		return new ResponseEntity<String>("success", HttpStatus.OK);
 	}
 
