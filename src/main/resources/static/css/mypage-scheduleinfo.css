@@ -26,12 +26,12 @@
 	margin-top: 30px;
 }
 
-.send-weekend-schedule, .send-daily-schedule,
+.send-weekly-schedule, .send-daily-schedule,
 	.send-important-monthly-schedule {
 	margin: 50px 30px;
 }
 
-.send-weekend-schedule-div, .send-daily-schedule-div,
+.send-weekly-schedule-div, .send-daily-schedule-div,
 	.send-important-monthly-schedule-div {
 	display: inline-block;
 	width: 570px;
@@ -86,7 +86,7 @@
 	transition: .4s;
 }
 
-.send-weekend-schedule input:checked+.slider {
+.send-weekly-schedule input:checked+.slider {
 	background-color: red;
 }
 

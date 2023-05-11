@@ -138,7 +138,6 @@ public class ScheduleController {
 				
 		//key - value
 		Map<String, List<SchedulelistVO>> schedulelistMap = schedulelistService.readMonthly(mnum, startDate, endDate);
-		System.out.println(sdate+" "+schedulelistMap);
 		return new ResponseEntity<>(schedulelistMap, HttpStatus.OK);
 	}
 	

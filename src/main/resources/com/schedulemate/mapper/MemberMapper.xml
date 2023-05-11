@@ -11,7 +11,7 @@
 		<result property="mjob" column="m_job" />
 		<result property="memail" column="m_email" />
 		<result property="mphonenumber" column="m_phonenumber" />
-		<result property="mweekend" column="m_weekend" />
+		<result property="mweekly" column="m_weekly" />
 		<result property="mdaily" column="m_daily" />
 		<result property="mimportantmonth" column="m_importantmonth" />
 		<result property="mbotUserId" column="m_botuserId" />
@@ -35,7 +35,7 @@
 			m_email,
 			m_phonenumber,
 			member_auth,
-			m_weekend,
+			m_weekly,
 			m_daily,
 			m_importantmonth,
 			m_botUserId
@@ -47,7 +47,7 @@
 	</select>
 	
 	
-	<!-- 회원가입 m_weekend, m_daily, m_importantmonth는 default 0-->
+	<!-- 회원가입 m_weekly, m_daily, m_importantmonth는 default 0-->
 	<insert id="create" parameterType="com.schedulemate.member.domain.MemberVO">
 		INSERT INTO member (
 			m_num, m_name, m_id, m_pwd, m_job, m_email, m_phonenumber
@@ -122,9 +122,9 @@
 	</update>
 	
 	<!-- 매주 알림 상태 업데이트 -->
-	<update id="updateMweekendStatus" parameterType="com.schedulemate.member.domain.MemberVO">
+	<update id="updateMweeklyStatus" parameterType="com.schedulemate.member.domain.MemberVO">
 		UPDATE member
-		SET m_weekend = #{mweekend}
+		SET m_weekly = #{mweekly}
 		WHERE m_num = #{mnum}
 	</update>
 	
@@ -134,4 +134,25 @@
 		SET m_importantmonth = #{mimportantmonth}
 		WHERE m_num = #{mnum}
 	</update>
+	
+		
+	<!-- 주간 알림 발송 조건에 맞는 m_botuserid list반환 -->
+	<select id="getChatIdlistSendWeekly" resultType="String">
+		SELECT m.m_botuserid
+		FROM Schedule s JOIN Member m ON s.m_num = m.m_num
+		WHERE s.s_date BETWEEN #{startDate} AND #{endDate}
+		AND m.m_weekly = 1
+	</select>
+		
+	<!-- 매달 중요 알림 발송 조건에 맞는 m_botuserid list반환 -->
+	<select id="getChatIdlistSendImportantMonthly" resultType="String">
+		SELECT m.m_botuserid
+		FROM
+		    schedulelist sl
+		    JOIN schedule s ON sl.s_num = s.s_num
+		    JOIN member m ON s.m_num = m.m_num
+		WHERE s.s_date BETWEEN #{startDate} AND #{endDate}
+		AND m.m_importantmonth = 1
+		AND sl.sl_importantschedule = 1
+	</select>
 </mapper>

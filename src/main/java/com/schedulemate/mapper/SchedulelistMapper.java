@@ -12,6 +12,10 @@ public interface SchedulelistMapper {
 	
 	//스케줄 읽기
 	public List<SchedulelistVO> read(@Param("snum") int snum) throws Exception;
+	// 주간알림 스케줄 읽기
+	public List<SchedulelistVO> readWeeklySchedulelist(@Param("chatId")String chatId, @Param("startDate")String startDate, @Param("endDate")String endDate) throws Exception;
+	// 매달중요알림 스케줄 읽기
+	public List<SchedulelistVO> readImportantMonthlySchedulelist(@Param("chatId")String chatId, @Param("startDate")String startDate, @Param("endDate")String endDate) throws Exception;
 	//스케줄 등록
 	public int create(SchedulelistVO vo) throws Exception;
 	//스케줄 삭제

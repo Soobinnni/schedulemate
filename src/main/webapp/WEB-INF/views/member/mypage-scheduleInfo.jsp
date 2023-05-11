@@ -19,7 +19,7 @@
 	<hr style='width:800px'>
 	<div class='mypage_schedule_info_detail'>
 		<div class='send-daily-schedule'>
-			<div class='send-weekend-schedule-div'>
+			<div class='send-weekly-schedule-div'>
 				${nbspwide }<img class='alert-img' alt="" src="/images/alert.png">
 				<span>${nbspnarrow }데일리 스케줄 알림 받기</span>
 				<div class='slider-box'>
@@ -38,19 +38,19 @@
 				</div>	
 			</div>
 		</div>
-		<div class='send-weekend-schedule'>
-			<div class='send-weekend-schedule-div'>
+		<div class='send-weekly-schedule'>
+			<div class='send-weekly-schedule-div'>
 				${nbspwide }<img class='alert-img' alt="" src="/images/alert.png">
 				<span>${nbspnarrow }매주 스케줄 알림 받기</span>
 				<div class='slider-box'>
 			<label class="switch">
 					<c:choose>
-						<c:when test="${member.mweekend eq 1}">
-							<input class='mweekend_btn' type="checkbox" name='mweekend_btn'
+						<c:when test="${member.mweekly eq 1}">
+							<input class='mweekly_btn' type="checkbox" name='mweekly_btn'
 							value='1' checked>
 						</c:when>
 						<c:otherwise>
-							<input class='mweekend_btn' type="checkbox" name='mweekend_btn'
+							<input class='mweekly_btn' type="checkbox" name='mweekly_btn'
 							value='1'>
 						</c:otherwise>	
 					</c:choose>	 
@@ -97,10 +97,10 @@ $(document).ready(function() {
 		ChkUserIDIsSaved($selector, url, type);//유저 아이디 입력돼 있는지 확인
 	});
 	//매주 알림 체크 / 언체크 이벤트
-	$(".mweekend_btn").change(function(event) {
-		var $selector = $(".mweekend_btn");
-		var url = "Mweekend";
-		var type = "mweekend";
+	$(".mweekly_btn").change(function(event) {
+		var $selector = $(".mweekly_btn");
+		var url = "Mweekly";
+		var type = "mweekly";
 		ChkUserIDIsSaved($selector, url, type);//유저 아이디 입력돼 있는지 확인
 	});
 	//매달 중요 알림 체크 / 언체크 이벤트

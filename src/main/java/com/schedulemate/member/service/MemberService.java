@@ -10,6 +10,6 @@ public interface MemberService {
 	public int chkDuplicateBotUserId(String mbotUserId) throws Exception;
 	public int botUserIdRegiste(String mbotUserId, int mnum) throws Exception;
 	public int updateMdailyStatus(MemberVO vo) throws Exception;
-	public int updateMweekendStatus(MemberVO vo) throws Exception;
+	public int updateMweeklyStatus(MemberVO vo) throws Exception;
 	public int updateMimportantmonthStatus(MemberVO vo) throws Exception;
 }

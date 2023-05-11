@@ -1,5 +1,7 @@
 package com.schedulemate.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.schedulemate.member.domain.MemberAuth;
@@ -37,8 +39,14 @@ public interface MemberMapper {
 	public int updateMdailyStatus(MemberVO vo) throws Exception;
 
 	// 마이페이지 매주 알람 업데이트
-	public int updateMweekendStatus(MemberVO vo) throws Exception;
+	public int updateMweeklyStatus(MemberVO vo) throws Exception;
 
 	// 마이페이지 매달 중요 알람 업데이트
 	public int updateMimportantmonthStatus(MemberVO vo) throws Exception;
+
+	//주간 알림 스케줄 m_botUserId 받기
+	public List<String> getChatIdlistSendWeekly(@Param("startDate") String startDate, @Param("endDate") String endDate) throws Exception;
+
+	//매달 중요 알림 스케줄 m_botUserId 받기
+	public List<String> getChatIdlistSendImportantMonthly(@Param("startDate") String startDate, @Param("endDate") String endDate) throws Exception;
 }

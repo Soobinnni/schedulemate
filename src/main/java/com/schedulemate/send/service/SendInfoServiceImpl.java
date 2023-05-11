@@ -8,8 +8,11 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -76,9 +79,9 @@ public class SendInfoServiceImpl implements SendInfoService {
 
 	// 데일리 알림 발송 설정 사용자에게 스케줄 전송하기
 	public Map<String, String> getSendDailyScheduleInfo() throws Exception {
-		LocalDate currentMonth = LocalDate.now().plusDays(1);
+		LocalDate tomorrow = LocalDate.now().plusDays(1);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-		String sdate = currentMonth.format(formatter); // 내일 날짜의 sdate
+		String sdate = tomorrow.format(formatter); // 내일 날짜의 sdate
 		
 		Map<String, String> infoToBeSentToTelegramMap = new HashMap<>();
 
@@ -101,6 +104,61 @@ public class SendInfoServiceImpl implements SendInfoService {
 		}
 		return infoToBeSentToTelegramMap;
 	};
+	
+
+	//매주 알림 발송 설정 사용자에게 스케줄 전송하기
+	public Map<String, String> getSendWeeklyScheduleInfo() throws Exception {
+		String startDate = formatplusDate(1); // 주간 시작
+		String closeDate = formatplusDate(8); // 주간 끝
+		
+		Map<String, String> infoToBeSentToTelegramMap = new HashMap<>();
+
+		// 매주 발송 알림이 돼 있고, 다음주 날짜에 스케줄이 있는 chatid 반환
+		List<String> chatIdlistSendWeekly = memberMapper.getChatIdlistSendWeekly(startDate, closeDate);
+		chatIdlistSendWeekly = removeDuplicateChatidElements(chatIdlistSendWeekly);	//중복 제거
+		
+		if (chatIdlistSendWeekly.size()!=0) {
+			// chatid을 기준으로 List<SchedulelistVO>담아 텍스트 전송
+			for (String chatId : chatIdlistSendWeekly) {
+				// List<SchedulelistVO> value로 담아오기
+				List<SchedulelistVO> schedulelist  = schedulelistMapper.readWeeklySchedulelist(chatId, startDate, closeDate);
+				String infoText = "★스케줄 메이트 주간 스케줄 알림입니다!★";
+				String text = makeWeeklyOrImportantMonthlySendMessage(schedulelist, infoText); // 메시지 만들기
+				// return 정보
+				infoToBeSentToTelegramMap.put(chatId,text);
+			}
+		} else {
+			System.out.println("전송할 주간 알림 발송 없음");
+		}
+		return infoToBeSentToTelegramMap;
+	};
+	
+	//매달 중요 알림 발송 설정 사용자에게 스케줄 전송하기
+	public Map<String, String> getSendImportantMonthlyScheduleInfo() throws Exception {
+		String startDate = formatplusDate(1); // 달의 시작
+		String closeDate = formatEndOfTheMonth(); // 달의 끝
+				
+		Map<String, String> infoToBeSentToTelegramMap = new HashMap<>();
+
+		// 매달 발송 알림이 돼 있고, 다음달 날짜에 중요 스케줄이 있는 chatid 반환
+		List<String> chatIdlistImportantMonthly = memberMapper.getChatIdlistSendImportantMonthly(startDate, closeDate);
+		chatIdlistImportantMonthly = removeDuplicateChatidElements(chatIdlistImportantMonthly);	//중복 제거
+				
+		if (chatIdlistImportantMonthly.size()!=0) {
+			// chatid을 기준으로 List<SchedulelistVO>담아 텍스트 전송
+			for (String chatId : chatIdlistImportantMonthly) {
+				// List<SchedulelistVO> value로 담아오기
+				List<SchedulelistVO> schedulelist  = schedulelistMapper.readImportantMonthlySchedulelist(chatId, startDate, closeDate);
+				String infoText = "★스케줄 메이트 매달 중요 스케줄 알림입니다!★";
+				String text = makeWeeklyOrImportantMonthlySendMessage(schedulelist, infoText); // 메시지 만들기
+				// return 정보
+				infoToBeSentToTelegramMap.put(chatId,text);
+			}
+		} else {
+			System.out.println("전송할 매달 중요 알림 발송 없음");
+		}
+		return infoToBeSentToTelegramMap;
+	};
 
 	// 체크한 스케줄 전송 문자 만들기
 	private String makeChkSendMessage(Map<String, List<SchedulelistVO>> scheduleMap) throws ParseException {
@@ -111,7 +169,7 @@ public class SendInfoServiceImpl implements SendInfoService {
 		for (String key : keySet) {
 			List<SchedulelistVO> schedulelist = scheduleMap.get(key); // 같은 날짜의 스케줄 리스트
 			sendText += "\n";
-			sendText += "▶ " + formatDate(key) + " ◀"; // 날짜
+			sendText += "▶ " + formatDateToString(key) + " ◀"; // 날짜
 			for (SchedulelistVO schedule : schedulelist) {
 				sendText += "\n";
 				String category = changeCategoryToString(schedule.getSlcategory());
@@ -129,7 +187,7 @@ public class SendInfoServiceImpl implements SendInfoService {
 	private String makeDailySendMessage(List<SchedulelistVO> schedulelist, String sdate) throws ParseException {
 		String sendText = "★스케줄 메이트 데일리 스케줄 알림입니다!★";
 		sendText += "\n-------------------\n\n";
-		sendText += "▶ " + formatDate(sdate) + " ◀"; // 날짜
+		sendText += "▶ " + formatDateToString(sdate) + " ◀"; // 날짜
 		for (SchedulelistVO schedule : schedulelist) {
 			sendText += "\n";
 			String category = changeCategoryToString(schedule.getSlcategory());
@@ -141,8 +199,32 @@ public class SendInfoServiceImpl implements SendInfoService {
 		return sendText;
 	}
 
+	// 주간, 매달 중요 스케줄 전송 문자 만들기
+	private String makeWeeklyOrImportantMonthlySendMessage(List<SchedulelistVO> schedulelist, String infoText) throws ParseException {
+		String prevDate = null; // 이전 날짜를 저장할 변수
+		
+		String sendText = infoText;
+		sendText += "\n-------------------\n";
+		for (SchedulelistVO schedule : schedulelist) {
+			String curDate = schedule.getSdate(); // 현재 날짜
+
+		    // 이전 날짜와 현재 날짜가 같지 않은 경우에만 날짜 정보를 추가
+		    if (prevDate == null || !prevDate.equals(curDate)) {
+		        sendText += "\n\n▶ " + formatDateToString(curDate) + " ◀";
+		        sendText += "\n";
+		        prevDate = curDate; // 현재 날짜를 이전 날짜로 저장
+		    }
+			String category = changeCategoryToString(schedule.getSlcategory());
+			String time = changeTimeToString(schedule.getSlplannedTime(), schedule.getSlplannedMin());
+			String content = schedule.getSlcontent();
+			sendText += "⊙ ";
+			sendText += category + " " + time + " " + content;
+		}
+		return sendText;
+	}
+	
 	// 날짜 포맷 변경
-	private String formatDate(String formatObj) throws ParseException {
+	private String formatDateToString(String formatObj) throws ParseException {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
 		Date date = format.parse(formatObj);
 
@@ -151,7 +233,30 @@ public class SendInfoServiceImpl implements SendInfoService {
 
 		return formattedDate;
 	}
+	
+	// 더한 날짜 포맷 변경
+	private String formatplusDate(int plusDate) throws ParseException {
+		LocalDate date = LocalDate.now().plusDays(plusDate);
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
+		String dateToString = date.format(dateFormatter); 
+		
+		return dateToString;
+	}
+	// 달의 마지막 날 포맷 변경
+	private String formatEndOfTheMonth() throws ParseException  {
+		// 다음 달의 마지막 날짜 구하기
+		LocalDate now = LocalDate.now().plusDays(1);
+		int year = now.getYear();
+		int month = now.getMonthValue();
+		int lastDayOfMonth = now.lengthOfMonth();
+		LocalDate lastDay = LocalDate.of(year, month, lastDayOfMonth);
+
+		// 마지막 날짜를 yyyy.MM.dd 형식의 문자열로 변환
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+		String lastDayString = lastDay.format(dateFormatter);
+		return lastDayString;
+	}
 	// 카테고리 문자열로 변경
 	private String changeCategoryToString(int categoryNum) throws ParseException {
 		String category = null;
@@ -182,5 +287,13 @@ public class SendInfoServiceImpl implements SendInfoService {
 			timeToString = time + "시 " + min + "분";
 		}
 		return timeToString;
+	}
+	
+	// 중복되는 chatid 제거
+	private List<String> removeDuplicateChatidElements(List<String> chatIdlistSendWeekly){
+		Set<String> set = new HashSet<>(chatIdlistSendWeekly); // HashSet에 List를 넣어 중복 제거
+		chatIdlistSendWeekly.clear(); // 기존 List 비우기
+		chatIdlistSendWeekly.addAll(set); // 중복 제거된 값들을 List에 다시 추가
+		return chatIdlistSendWeekly;
 	}
 }

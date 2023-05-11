@@ -10,7 +10,6 @@ import lombok.Setter;
 public class ScheduleVO {
 	private int snum; //스케줄 넘버
 	private String sdate; //스케줄 날짜
-	private int simportantSchedule; //중요 스케줄 여부
 	
 	private int mnum; //회원 넘버
 }

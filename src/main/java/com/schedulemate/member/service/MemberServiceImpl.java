@@ -45,8 +45,8 @@ public class MemberServiceImpl implements MemberService {
 		return memberMapper.updateMdailyStatus(vo);
 	};
 	//마이페이지 매주 알람 업데이트
-	public int updateMweekendStatus(MemberVO vo) throws Exception{
-		return memberMapper.updateMweekendStatus(vo);
+	public int updateMweeklyStatus(MemberVO vo) throws Exception{
+		return memberMapper.updateMweeklyStatus(vo);
 	};
 	//마이페이지 매달 중요 알람 업데이트
 	public int updateMimportantmonthStatus(MemberVO vo) throws Exception{

@@ -23,7 +23,7 @@ create table member (
      m_job VARCHAR2(20) NOT NULL,--직업
      m_email VARCHAR2(50) NOT NULL,--이메일
      m_phonenumber VARCHAR2(50) NOT NULL, --휴대폰번호
-     m_weekend number(1) DEFAULT 0 NOT NULL, --주 스케줄 알림 여부
+     m_weekly number(1) DEFAULT 0 NOT NULL, --주 스케줄 알림 여부
      m_daily number(1) DEFAULT 0 NOT NULL,--하루 스케줄 알림 여부
      m_importantmonth number(1) DEFAULT 0 NOT NULL,--한달 전 중요 스케줄 알림 여부,
      m_botuserId VARCHAR(50) UNIQUE --봇 유저아이디
@@ -45,8 +45,7 @@ create table schedule (
      s_num number NOT NULL ,--schedule 시퀀스번호
      m_num number NOT NULL,--member 시퀀스번호(FK)
      s_date DATE NOT NULL,--스케줄 날짜
-     s_importantschedule number, --중요 스케줄 여부
-    PRIMARY KEY (s_date, s_num),
+     PRIMARY KEY (s_date, s_num),
     FOREIGN KEY ( m_num ) REFERENCES member ( m_num )
 );
 --schedule sequence

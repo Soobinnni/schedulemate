@@ -10,7 +10,7 @@
 	<!-- 스케줄 read -->
 	<select id='read'
 		resultType="com.schedulemate.schedule.domain.ScheduleVO">
-		SELECT  s_num, m_num, TO_CHAR(s_date, 'yyyy.mm.dd') AS s_date, s_importantschedule
+		SELECT  s_num, m_num, TO_CHAR(s_date, 'yyyy.mm.dd') AS s_date
 		FROM schedule
 		WHERE m_num = #{mnum} AND s_date = #{sdate}
 	</select>
@@ -19,12 +19,11 @@
 	<insert id="create"
 		parameterType="com.schedulemate.schedule.domain.ScheduleVO">
 		INSERT INTO schedule (
-		s_num, s_date, s_importantSchedule, m_num
+		s_num, s_date, m_num
 		)
 		VALUES(
 		schedule_seq.NEXTVAL,
 		#{sdate},
-		#{simportantSchedule},
 		#{mnum}
 		)
 		<selectKey keyProperty="snum" resultType="int" order="AFTER">

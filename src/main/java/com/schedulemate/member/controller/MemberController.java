@@ -83,10 +83,10 @@ public class MemberController {
 		return new ResponseEntity<String>("update success", HttpStatus.OK);
 	}	
 	//마이페이지 매주 알람 업데이트
-	@PostMapping("/mypage/updateMweekendStatus")
-	public ResponseEntity<String> updateMweekendStatus(@RequestBody MemberVO vo, HttpServletRequest request) throws Exception {
+	@PostMapping("/mypage/updateMweeklyStatus")
+	public ResponseEntity<String> updateMweeklyStatus(@RequestBody MemberVO vo, HttpServletRequest request) throws Exception {
 		vo.setMnum((Integer)request.getSession(true).getAttribute("mnum"));
-		int success = memberService.updateMweekendStatus(vo);
+		int success = memberService.updateMweeklyStatus(vo);
 		System.out.println("매주 알람 상태 변경 완료 : "+success);
 		return new ResponseEntity<String>("update success", HttpStatus.OK);
 	}	
