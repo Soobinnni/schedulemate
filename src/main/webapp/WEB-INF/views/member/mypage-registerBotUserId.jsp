@@ -20,10 +20,10 @@
 	<hr style='width:800px'>
 	<div class='mypage_userid_info_detail'>
 		<div class="mypage_userid_info_form_container">
-			<form class='userid_form' action="/member/botUserIdRegiste" method="post">
+			<form class='userid_form'>
 				<input name="mbotUserId" type='text' class='mypage_userid_info_input'
 					placeholder="userId를 입력해주세요"> <input
-					class='mypage_userid_info_sub_btn' type="submit" value='입력' />
+					class='mypage_userid_info_sub_btn' type="button" value='입력' />
 				<sec:csrfInput />
 			</form>
 		</div>
@@ -66,9 +66,10 @@
 												formContainer
 														.find(
 																'.mypage_userid_info_sub_btn')
-														.removeClass('mypage_userid_info_sub_btn')
+														/* .removeClass('mypage_userid_info_sub_btn')
 														.addClass('mypage_userid_info_modify_btn')
-														.val('수정하기');
+														.val('수정하기'); */
+														.replaceWith('<button class="mypage_userid_info_modify_btn">수정하기</button>');
 											}
 										}
 									}
@@ -80,12 +81,37 @@
 								alert('내용을 입력해주세요!');
 								return
 							} else {
-								$(".userid_form").submit();
+								chkDuplicateBotUserId(inputData);
 							}
 						});
 						//수정 페이지로 이동
 						$(".mypage_userid_info_modify_btn").on("click", function(){
-							window.location.href = '/member/modifyBotUserId';
+							$(".userid_form").submit(function(e) {
+						        e.preventDefault();
+						    });
+					        window.location.href = '/member/modifyBotUserId';
 						});
 					});
+	function chkDuplicateBotUserId(inputData){
+		$.ajax({
+			type: "post",
+			url: "/member/chkDuplicateBotUserId",
+			data: JSON.stringify({
+				"mbotUserId" : inputData.toString()
+			}),
+			contentType: "application/json; charset=utf-8",
+			success: function(response) {
+				console.log(response);
+				if (response=='duplicate') {
+					alert('이미 등록된 아이디입니다.\n다른 아이디를 입력해주세요!');
+				} else {
+					var userIdForm = $(".userid_form");
+					userIdForm.attr("action", "/member/botUserIdRegiste");
+					userIdForm.attr("method", "post");
+					userIdForm.submit();
+					alert('등록됐습니다!');
+				}
+			}
+		}); 
+	}
 </script>

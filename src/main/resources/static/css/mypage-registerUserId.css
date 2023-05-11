@@ -51,7 +51,8 @@
 	cursor: pointer;
 }
 .mypage_userid_info_modify_btn {
-	width : 65px;
+	width : 70px;
+	float:right;
 }
 .modify_success_btn, .modify_cancel_btn {
 	width : 70px;

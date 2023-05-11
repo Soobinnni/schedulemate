@@ -7,6 +7,7 @@ public interface MemberService {
 	public int idCheck(MemberVO member) throws Exception;
 	public MemberVO read(String mid) throws Exception;
 	public int botUserIdChk(int mnum) throws Exception;
+	public int chkDuplicateBotUserId(String mbotUserId) throws Exception;
 	public int botUserIdRegiste(String mbotUserId, int mnum) throws Exception;
 	public int updateMdailyStatus(MemberVO vo) throws Exception;
 	public int updateMweekendStatus(MemberVO vo) throws Exception;

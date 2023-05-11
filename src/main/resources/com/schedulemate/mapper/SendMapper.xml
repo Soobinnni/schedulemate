@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.schedulemate.mapper.SendMapper">
+	<!-- 멤버 넘버 read
+	<insert id='logSendSuccessMessage' parameterType="com.schedulemate.send.domain.SendVO">
+		INSERT INTO send
+			(sd_num, m_num, sd_occuredError, sd_requestedType)
+		VALUES
+			(send_seq.nextVal, #{mnum}, #{sdOccuredError}, #{sdRequestedType})	
+	</insert>
+	
+	<insert id='logSendFailureMessage' parameterType="com.schedulemate.send.domain.SendVO">
+		INSERT INTO send
+			(sd_num, m_num, sd_occuredError, sd_requestedType)
+		VALUES
+			(send_seq.nextVal, #{mnum}, #{sdOccuredError}, #{sdRequestedType})	
+	</insert> -->
+	
+	<insert id="logSendSuccessMessage">
+		INSERT INTO send
+			(sd_num, m_num, sd_occuredError, sd_requestedType) 
+		VALUES
+			(
+				send_seq.nextval, (select m_num from member where m_botuserid=#{chatId}), 
+				#{sendVo.sdOccuredError}, #{sendVo.sdRequestedType}	
+			)
+	</insert>
+	<insert id='logSendFailureMessage'>
+		INSERT INTO send
+			(sd_num, m_num, sd_occuredError, sd_errormessage, sd_requestedType)
+		VALUES
+			(
+				send_seq.nextval, (select m_num from member where m_botuserid=#{chatId}), 
+				#{sendVo.sdOccuredError}, #{sendVo.sdErrorMessage}, #{sendVo.sdRequestedType}	
+			)
+	</insert>
+</mapper>

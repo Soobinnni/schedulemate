@@ -20,11 +20,10 @@
 	<hr style='width:800px'>
 	<div class='mypage_userid_info_detail'>
 		<div class="mypage_userid_info_form_container" style='width:500px;'>
-			<form class='userid_form' action="/member/botUserIdRegiste"
-				method="post">
+			<form class='userid_form'>
 				<input name="mbotUserId" type='text' style='width:300px'
 					class='mypage_userid_info_input' placeholder="userId를 입력해주세요">
-				<input class='modify_success_btn' type="submit" value='수정완료' />
+				<input class='modify_success_btn' type="button" value='수정완료' />
 				<button class='modify_cancel_btn' type='button'>수정취소</button>
 				<sec:csrfInput />
 			</form>
@@ -53,8 +52,31 @@
 								alert('내용을 입력해주세요!');
 								return
 							} else {
-								$(".userid_form").submit();
+								console.log(inputData);
+								chkDuplicateBotUserId(inputData); 
 							}
 						});
 					});
+	function chkDuplicateBotUserId(inputData){
+		$.ajax({
+			type: "post",
+			url: "/member/chkDuplicateBotUserId",
+			data: JSON.stringify({
+				"mbotUserId" : inputData.toString()
+			}),
+			contentType: "application/json; charset=utf-8",
+			success: function(response) {
+				console.log(response);
+				if (response=='duplicate') {
+					alert('이미 등록된 아이디입니다.\n다른 아이디를 입력해주세요!');
+				} else {
+					var userIdForm = $(".userid_form");
+					userIdForm.attr("action", "/member/botUserIdRegiste");
+					userIdForm.attr("method", "post");
+					userIdForm.submit();
+					alert('수정이 완료됐습니다!');
+				}
+			}
+		}); 
+	}
 </script>

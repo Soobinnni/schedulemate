@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import com.schedulemate.send.domain.SendVO;
 import com.schedulemate.send.service.SendInfoService;
 import com.schedulemate.send.service.TelegramBotService;
 
@@ -27,10 +29,10 @@ public class TelegramBotScheduler {
 	@Scheduled(cron = "0 0 18 * * ?") // 오후 6시마다 데일리 알림 발송
     public void sendDailyReminder() throws Exception {
         Map<String, String> infoToBeSentToTelegramMap = sendService.getSendDailyScheduleInfo(); // sendService에서 알림 정보 리스트 가져오기
-
+        SendVO sendVO = new SendVO("daily");
 
 		Instant start = Instant.now();
-        telegramBotService.sendMessages(infoToBeSentToTelegramMap);
+        telegramBotService.sendMessages(sendVO, infoToBeSentToTelegramMap);
         Instant end = Instant.now();
 		long timeElapsedMillis = Duration.between(start, end).toMillis();
 		long minutes = TimeUnit.MILLISECONDS.toMinutes(timeElapsedMillis);

@@ -56,6 +56,9 @@
 	outline: none;
 	text-align: inherit;
 }
+.schedule input.slcontent {
+	width : 350px;
+}
 .sltime {
 	display:inline-block;
 	padding-left:20px;

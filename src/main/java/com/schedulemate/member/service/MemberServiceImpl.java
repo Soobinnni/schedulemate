@@ -32,6 +32,10 @@ public class MemberServiceImpl implements MemberService {
 	public int botUserIdChk(int mnum) throws Exception{
 		return memberMapper.botUserIdChk(mnum);
 	};
+	//userid 중복 체크
+	public int chkDuplicateBotUserId(String mbotUserId) throws Exception{
+		return memberMapper.chkDuplicateBotUserId(mbotUserId);
+	};
 	//userid를 등록
 	public int botUserIdRegiste(String mbotUserId, int mnum) throws Exception{
 		return memberMapper.botUserIdRegiste(mbotUserId, mnum);

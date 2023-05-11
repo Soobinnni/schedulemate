@@ -20,6 +20,9 @@ public interface MemberMapper {
 
 	// userid를 등록한 적 있는 지 조회
 	public int botUserIdChk(int mnum) throws Exception;
+	
+	// userid 중복 체크
+	public int chkDuplicateBotUserId(@Param("mbotUserId") String mbotUserId) throws Exception;
 
 	// userid를 등록
 	public int botUserIdRegiste(@Param("mbotUserId") String mbotUserId, @Param("mnum") int mnum) throws Exception;

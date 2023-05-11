@@ -115,6 +115,20 @@ public class MemberController {
 		}
 	}
 	
+	//bot userid 중복체크
+	@PostMapping("/chkDuplicateBotUserId")
+	public ResponseEntity<String> chkDuplicateBotUserId(@RequestBody MemberVO vo) throws Exception {
+		String mbotUserId = vo.getMbotUserId();
+		int result = memberService.chkDuplicateBotUserId(mbotUserId);
+		if (result == 0) {
+			System.out.println("가능");
+			return new ResponseEntity<>("available", HttpStatus.OK);
+		} else {
+			System.out.println("중복");
+			return new ResponseEntity<>("duplicate", HttpStatus.OK);
+		}
+	}
+	
 	//bot userid입력
 	@PostMapping("/botUserIdRegiste")
 	public String botUserIdRegiste(HttpServletRequest request, String mbotUserId, Model model) throws Exception {

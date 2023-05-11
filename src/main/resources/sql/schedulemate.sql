@@ -2,6 +2,7 @@
 drop table schedulelist purge ;
 drop table schedule purge ;
 drop table member_auth purge;
+drop table send purge ;
 drop table member purge ;
 
 --순서에 상관 없는 테이블들
@@ -9,6 +10,7 @@ drop table persistent_logins purge;
 
 --시퀀스 삭제
 drop sequence member_seq;
+drop sequence send_seq;
 drop sequence schedule_seq;
 drop sequence schedulelist_seq;
 
@@ -24,7 +26,7 @@ create table member (
      m_weekend number(1) DEFAULT 0 NOT NULL, --주 스케줄 알림 여부
      m_daily number(1) DEFAULT 0 NOT NULL,--하루 스케줄 알림 여부
      m_importantmonth number(1) DEFAULT 0 NOT NULL,--한달 전 중요 스케줄 알림 여부,
-     m_botuserId VARCHAR(50) DEFAULT '0' NOT NULL --봇 유저아이디
+     m_botuserId VARCHAR(50) UNIQUE --봇 유저아이디
 );
 --member sequence
 create sequence member_seq
@@ -67,6 +69,22 @@ create table schedulelist (
 );
 --schedule sequence
 create sequence schedulelist_seq
+start with 1
+increment by 1;
+
+--send table
+CREATE TABLE send (
+    sd_num number not null , --전송고유번호
+    m_num number not null, --멤버 고유번호
+    sd_timeToSend timestamp default current_timestamp not null, --발송하려던 시각
+    sd_occuredError number not null, --오류 발생 여부
+    sd_errorMessage varchar2(300), --오류메시지
+    sd_requestedType varchar2(100) not null,--요청된 타입
+    PRIMARY KEY (sd_num),
+    FOREIGN KEY ( m_num ) REFERENCES member ( m_num )
+);
+--send sequence
+create sequence send_seq
 start with 1
 increment by 1;
 

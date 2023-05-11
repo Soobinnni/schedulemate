@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.schedulemate.send.domain.SendVO;
 import com.schedulemate.send.service.SendInfoService;
 import com.schedulemate.send.service.TelegramBotService;
 
@@ -34,11 +35,11 @@ public class SendController {
 		//보낼 정보
 		String chatId = infoToBeSentToTelegramMap.get("chatId");
 		String text = infoToBeSentToTelegramMap.get("text");
-		
-		botService.sendMessage(chatId, text);
+		SendVO sendVO = new SendVO("checked");
+		String message = botService.sendMessage(chatId, text, sendVO);
 		
 		//스케줄 전송 서비스 호출
-		return new ResponseEntity<String>("success", HttpStatus.OK);
+		return new ResponseEntity<String>(message, HttpStatus.OK);
 	}
 
 }

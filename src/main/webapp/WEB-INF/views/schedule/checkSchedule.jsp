@@ -247,7 +247,11 @@ $(document).ready(function() {
 					data: JSON.stringify(snumList),
 					contentType: "application/json; charset=utf-8",
 					success: function(response) {
-						alert('스케줄이 전송됐습니다!');
+						if (response=='success') {
+							alert('스케줄이 전송됐습니다!');
+						} else {
+							alert('전송에 실패했습니다.\n등록된 챗아이디를 다시 입력하거나\n고객센터에 문의해주세요.');
+						}
 						window.location.href = '/schedule/home';
 					}
 				}); 

@@ -41,12 +41,10 @@ class SchedulemateApplicationTests {
 		for (Map.Entry<String, String> entry : chatIdToTextMap.entrySet()) {
 			String text = entry.getKey();
 			String chatId = entry.getValue();
-			try {
-				service.sendMessage(chatId, text);
-			} catch (TelegramApiException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			/*
+			 * try { service.sendMessage(chatId, text); } catch (TelegramApiException e) {
+			 * // TODO Auto-generated catch block e.printStackTrace(); }
+			 */
 		}
 		Instant end = Instant.now();
 		long timeElapsedMillis = Duration.between(start, end).toMillis();
@@ -126,12 +124,10 @@ class SchedulemateApplicationTests {
 				String text = entry.getKey();
 				String chatId = entry.getValue();
 
-				try {
-					service.sendMessage(chatId, text);
-				} catch (TelegramApiException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				/*
+				 * try { service.sendMessage(chatId, text); } catch (TelegramApiException e) {
+				 * // TODO Auto-generated catch block e.printStackTrace(); }
+				 */
 			}
 		}
 	}
