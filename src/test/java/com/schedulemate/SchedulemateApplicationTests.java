@@ -16,6 +16,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import com.schedulemate.mapper.ScheduleMapper;
+import com.schedulemate.schedule.domain.ScheduleVO;
 import com.schedulemate.send.service.TelegramBotService;
 
 import java.time.Duration;
@@ -24,6 +26,8 @@ import java.time.Duration;
 class SchedulemateApplicationTests {
 	@Autowired
 	private TelegramBotService service;
+	@Autowired
+	private ScheduleMapper mapper;
 	private final int NUM_THREADS = 12; // 최대 스레드 개수
 	private final ExecutorService executorService = Executors.newFixedThreadPool(NUM_THREADS);
 

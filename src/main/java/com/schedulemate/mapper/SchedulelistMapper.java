@@ -8,7 +8,7 @@ import com.schedulemate.schedule.domain.SchedulelistVO;
 
 public interface SchedulelistMapper {
 
-	public List<SchedulelistVO> readMonthly(@Param("mnum") int mnum, @Param("sdate") String sdate) throws Exception;
+	public List<SchedulelistVO> readMonthly(@Param("mnum") int mnum, @Param("startDate") String startDate, @Param("endDate") String endDate) throws Exception;
 	
 	//스케줄 읽기
 	public List<SchedulelistVO> read(@Param("snum") int snum) throws Exception;

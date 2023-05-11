@@ -44,7 +44,7 @@ CREATE TABLE member_auth (
 create table schedule (
      s_num number NOT NULL ,--schedule 시퀀스번호
      m_num number NOT NULL,--member 시퀀스번호(FK)
-     s_date VARCHAR2(50) NOT NULL,--스케줄 날짜
+     s_date DATE NOT NULL,--스케줄 날짜
      s_importantschedule number, --중요 스케줄 여부
     PRIMARY KEY (s_date, s_num),
     FOREIGN KEY ( m_num ) REFERENCES member ( m_num )
@@ -62,7 +62,7 @@ create table schedulelist (
      sl_content VARCHAR2(3000) NOT NULL,--계획 내용
      sl_importantschedule number, --중요 스케줄 여부
      sl_category number, --스케줄 카테고리
-    s_date VARCHAR2(50) NOT NULL,--스케줄 날짜(FK)
+    s_date DATE NOT NULL,--스케줄 날짜(FK)
      s_num number NOT NULL ,--schedule 시퀀스번호
     PRIMARY KEY (sl_num),
     FOREIGN KEY ( s_date, s_num ) REFERENCES schedule ( s_date, s_num )

@@ -3,6 +3,7 @@ package com.schedulemate.schedule.controller;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -130,9 +131,31 @@ public class ScheduleController {
 	public ResponseEntity<Map<String, List<SchedulelistVO>>> schedulelist(@RequestBody  Map<String, String> object) throws Exception{
 		int mnum = Integer.parseInt(object.get("mnum"));
 		String sdate = (String)object.get("sdate");
+		List<String> monthStartDateAndEndDate = calMonthStartDateAndEndDate(sdate);
+
+		String startDate = monthStartDateAndEndDate.get(0);
+		String endDate = monthStartDateAndEndDate.get(1);
 				
 		//key - value
-		Map<String, List<SchedulelistVO>> schedulelistMap = schedulelistService.readMonthly(mnum, sdate);
+		Map<String, List<SchedulelistVO>> schedulelistMap = schedulelistService.readMonthly(mnum, startDate, endDate);
+		System.out.println(sdate+" "+schedulelistMap);
 		return new ResponseEntity<>(schedulelistMap, HttpStatus.OK);
+	}
+	
+	private List<String> calMonthStartDateAndEndDate(String sdate) {
+
+		String month = sdate;
+        LocalDate start = LocalDate.parse(month + ".01", DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+        LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
+
+        String startDate = start.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+        String endDate = end.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+
+        List<String> monthStartDateAndEndDate = new ArrayList<>();
+        monthStartDateAndEndDate.add(startDate);
+        monthStartDateAndEndDate.add(endDate);
+        
+        return monthStartDateAndEndDate;
+
 	}
 }

@@ -16,11 +16,14 @@
 
 	<!-- 한달로 묶어서 반환 -->
 	<select id="readMonthly" resultMap="schedulelist">
-		SELECT sl.*
+		SELECT 
+		 sl.sl_num, sl.sl_plannedtime, sl.sl_plannedmin, sl.sl_content, 
+		 sl.sl_importantschedule, sl.sl_category, TO_CHAR(sl.s_date, 'yyyy.mm.dd') AS s_date, sl.s_num
 		FROM schedule s
 		JOIN schedulelist sl ON s.s_date = sl.s_date AND s.s_num = sl.s_num
 		JOIN member m ON s.m_num = m.m_num
-		WHERE sl.s_date LIKE '%'||#{sdate}||'%' AND s.m_num = #{mnum}
+		WHERE sl.s_date <!-- LIKE '%'||#{sdate}||'%'  --> BETWEEN #{startDate} AND #{endDate}
+				AND s.m_num = #{mnum}
 		ORDER BY sl.s_date ASC, sl.sl_plannedtime ASC, sl_plannedmin ASC
 	</select>	
 	<!-- 스케줄리스트 read -->

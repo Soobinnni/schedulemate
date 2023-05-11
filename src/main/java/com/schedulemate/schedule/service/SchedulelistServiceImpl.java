@@ -17,9 +17,9 @@ public class SchedulelistServiceImpl implements SchedulelistService {
 	private SchedulelistMapper mapper;
 
 	//해당 날짜의 스케줄 리스트 담기
-	public Map<String, List<SchedulelistVO>> readMonthly(int mnum, String sdate) throws Exception {
+	public Map<String, List<SchedulelistVO>> readMonthly(int mnum, String startDate, String endDate) throws Exception {
 		//쿼리 결과
-		List<SchedulelistVO> SchedulelistList = mapper.readMonthly(mnum, sdate);
+		List<SchedulelistVO> SchedulelistList = mapper.readMonthly(mnum, startDate, endDate);
 
 		// sdate를 key로 하고 SchedulelistVO를 value로 하는 Map 객체를 생성하여 결과를 저장할 List 객체에 추가
 		Map<String, List<SchedulelistVO>> scheduleMap = new HashMap<>();
